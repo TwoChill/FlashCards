@@ -48,11 +48,16 @@ print('-' * (37 + (len(str(table)) + len(str(up_to)))))     # A highlighter
 
 
 while True:
-    # Creates a random number between 1 and up_to variable.
+    # x Creates a random number between 1 and up_to variable.
+    # xx Creates a random number to switch the questions.
     x = random.randint(1, up_to)
-
-    print(f'\n\nWhat is {x} * {table}?')
-    sum = x * table                         # Calculate the correct answer
+    xx = random.randint(1, 3)
+    if xx == 1:
+	    print(f'\n\nWhat is {x} * {table}?')
+    else:
+    	print(f'\n\nWhat is {table} * {x}?')
+     
+    sum = x * table                         # Calculate the correct answer  	
 
     try:
         answer = str(input(':> '))          # Converters answer to a string
