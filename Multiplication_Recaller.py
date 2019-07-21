@@ -24,7 +24,7 @@ try:
         exit(0)
 
     # Prompts user to choose up to how many times
-    up_to = str(input('Up to how many times? :> ').lower())
+    up_to = str(input('Up to which vector? :> ').lower())
 
     if up_to == 'quit':
         raise KeyboardInterrupt
