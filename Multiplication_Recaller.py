@@ -73,7 +73,7 @@ while True:
                     exit(0)
 
     if answer == sum:
-        print('That\'s corect!\n')
+        print('That\'s correct!\n')
         correct += 1
         total += 1
 
