@@ -23,14 +23,14 @@ try:
         print("That's not a number!")
         exit(0)
 
-    # Prompts user to choose up to how many times
-    up_to = str(input('Up to which vector? :> ').lower())
+    # Prompts user to choose up to which vector they want to practice.
+    vector = str(input('Up to which vector? :> ').lower())
 
-    if up_to == 'quit':
+    if vector == 'quit':
         raise KeyboardInterrupt
-    elif int(up_to) in range(1, 1001):
-        up_to = int(up_to)          # Convert the string up_to into a interger
-    elif int(up_to) not in range(1, 1001):
+    elif int(vector) in range(1, 1001):
+        vector = int(vector)     # Convert the string 'vector' into a interger.
+    elif int(vector) not in range(1, 1001):
         print('\nSorry, I won\'t produces numbers higher then 1000, Smarty-Pants.')
         exit(0)
     else:
@@ -43,21 +43,21 @@ except:
         exit(0)
 
 
-print(f'\n\n\nRecalling the table of {table} up to {up_to} times.')
-print('-' * (37 + (len(str(table)) + len(str(up_to)))))     # A highlighter
+print(f'\n\n\nRecalling the table of {table} with a vector of {vector}.')
+print('-' * (37 + (len(str(table)) + len(str(vector)))))     # A highlighter.
 
 
 while True:
-    # x Creates a random number between 1 and up_to variable.
+    # x Creates a random number between 1 and the num in the 'vector' variable.
     # xx Creates a random number to switch the questions.
-    x = random.randint(1, up_to)
+    x = random.randint(1, vector)
     xx = random.randint(1, 3)
     if xx == 1:
-	    print(f'\n\nWhat is {x} * {table}?')
-    else:
-    	print(f'\n\nWhat is {table} * {x}?')
-     
-    sum = x * table                         # Calculate the correct answer  	
+        print(f'\n\nWhat is {x} * {table}?')
+    else:   # 1 seems more dominant. xx gives this line more chances.
+        print(f'\n\nWhat is {table} * {x}?')
+
+    sum = x * table                         # Calculate the correct answer.
 
     try:
         answer = str(input(':> '))          # Converters answer to a string
@@ -65,7 +65,7 @@ while True:
             answer = 0
         elif int(answer) not in range(1, 1001):
             print('That is not a numer')
-        answer = int(answer)                # Converts answer to an interger
+        answer = int(answer)                # Converts answer to an interger.
 
     except:
         if KeyboardInterrupt:
@@ -85,6 +85,6 @@ while True:
     else:
         print('\nThat\'s not correct!')
         print('Correct answer is', sum)
-        print('=' * (18 + (len(str(sum)))))     # Highlights the right anwer
+        print('=' * (18 + (len(str(sum)))))     # Highlights the right anwer.
         incorrect += 1
         total += 1
