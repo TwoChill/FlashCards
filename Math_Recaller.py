@@ -37,14 +37,14 @@ try:
         print("That's not a number!")
         exit(0)
 
-except:
-    if KeyboardInterrupt:
-        print('\n\nThank you for trying!\n')
-        exit(0)
+except KeyboardInterrupt:
+    print('\n\nThank you for trying!\n')
+    exit(0)
 
 
-print(f'\n\n\nRecalling the table of {table} with a vector of {vector}.')
-print('-' * (37 + (len(str(table)) + len(str(vector)))))     # A highlighter.
+text = (f'\n\n\nRecalling the table of {table} with a vector of {vector}.')
+print(text)
+print('-' * len(text))     # A highlighter.
 
 
 while True:
@@ -67,18 +67,17 @@ while True:
             print('That is not a numer')
         answer = int(answer)                # Converts answer to an interger.
 
-    except:
-        if KeyboardInterrupt:
-            try:
-                print('\nYour grade is a', int(correct * 10 / total), '/ 10\n')
-                print('\n\nThank you for trying!\n')
-                exit(0)
-            except:
-                if ZeroDivisionError:
-                    exit(0)
+    except KeyboardInterrupt:
+        try:
+            print('\nYour grade is a', int(correct * 10 / total), '/ 10\n')
+            print('\n\nThank you for trying!\n')
+            exit(0)
+        except ZeroDivisionError:
+            exit(0)
 
     if answer == sum:
-        print('That\'s correct!\n')
+        print('\nThat\'s correct!')
+        print('=' * 15)                         # Highlights the right anwer.
         correct += 1
         total += 1
 
