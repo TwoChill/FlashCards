@@ -135,7 +135,7 @@ not_equal_and_equal_to = 18, 25
 # This print block is to prompt user to choose a catagory.
 try:
     ranges = int(input(('''
-    Which do you want to learn?
+    Which do you want to recall?
     ===========================
 
      1. All Questions
