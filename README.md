@@ -1,4 +1,4 @@
-# Memorization_Scripts
+# Memorization Scripts
 
 These scripts are for those who want to recall information.
 
@@ -16,7 +16,7 @@ This can be handy to train certain areas when you are out and about.
 
 
 
-# Boolean_Expression_Recaller
+# Boolean Expression Recaller
 
 * Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
 
@@ -66,3 +66,21 @@ Evaluates to?:	-->	quit
       ==================================
     
 ```
+# Multiplication Table Recaller
+
+
+* Run ```(YOUR PATH)/Multiplication_Table_Recallper.py
+
+* You can choose which multiplication table to recall.
+```
+==============================
+Type "quit" or "result to see your grade!
+==============================
+
+Which multiplication table to recall? :> 10
+```
+* Then choose your vector  (How high will you go up the table?)
+```
+Up to which vector? :> 200
+```
+
