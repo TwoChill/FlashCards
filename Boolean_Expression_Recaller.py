@@ -66,12 +66,8 @@ def rapport():
      |       Your Grade:         {grade}      |
       ==================================
     ''')
-    print("Press CTRL + C to quit.")
-    try:
-        time.sleep(5)
-        exit()
-    except KeyboardInterrupt:
-        exit()
+    time.sleep(5)
+    exit()
 
 
 def rapport_2():
@@ -86,12 +82,8 @@ def rapport_2():
      |       Your Grade:         {grade}      |
       ==================================
     ''')
-    print("Press CTRL + C to quit.")
-    try:
-        time.sleep(5)
-        exit()
-    except KeyboardInterrupt:
-        exit()
+    time.sleep(5)
+    exit()
 
 
 def quit():
