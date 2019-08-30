@@ -65,5 +65,4 @@ Evaluates to?:	-->	quit
      |       Your Grade:         5      |
       ==================================
     
-Press CTRL + C to quit.
 ```
