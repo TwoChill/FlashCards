@@ -12,7 +12,7 @@ try:
     # Promts user to choose which table to recall from memory
     table = str(input('\nWhich multiplication table to recall? :> ').lower())
 
-    if table == 'quit':
+    if table == 'quit' or table == 'result':
         raise KeyboardInterrupt
     elif int(table) in range(1, 1001):
         table = int(table)          # Convert the string table into a interger
@@ -26,7 +26,7 @@ try:
     # Prompts user to choose up to which vector they want to practice.
     vector = str(input('Up to which vector? :> ').lower())
 
-    if vector == 'quit':
+    if vector == 'quit' or vector == 'result':
         raise KeyboardInterrupt
     elif int(vector) in range(1, 1001):
         vector = int(vector)     # Convert the string 'vector' into a interger.
