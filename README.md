@@ -69,7 +69,7 @@ Evaluates to?:	-->	quit
 # Multiplication Table Recaller
 
 
-* Run ```(YOUR PATH)/Multiplication_Table_Recallper.py
+* Run ```(YOUR PATH)/Multiplication_Table_Recallper.py```
 
 * You can choose which multiplication table to recall.
 ```
