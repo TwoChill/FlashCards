@@ -11,14 +11,16 @@ This can be handy to train certain areas when you are out and about.
 
 ## Getting Started
 
-Run ```git clone https://github.com/MdeFrance/Memorization_Programs.git```
+* Run ```git clone https://github.com/MdeFrance/Memorization_Programs.git```
 
 
-### Boolean_Expression_Recaller
 
-Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
 
-You can choose which questions you want to recall
+# Boolean_Expression_Recaller
+
+* Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
+
+* You can choose which questions you want to recall.
 ```
 ======================= 
 Boolean Expression Quiz
@@ -37,4 +39,31 @@ Boolean Expression Quiz
      8. Not Equal (!=)
      9. Equal To (==)
     10. Not Equal (!=) & Equal To (==)
+```
+
+* Type in the answer to see if you got it right.
+```
+Question:	-->	False and True
+Evaluates to?:	-->	False
+
+
+				CORRECT!
+				========
+```
+* Type ```quit``` or ``` result``` to exit and/or see you results.
+```
+Question:	-->	True and False
+Evaluates to?:	-->	quit
+
+      ==================================
+      Boolean Expression Quiz -  Results:
+      ==================================
+     |       Correct Answerd:    2      |
+     |       Incorrect Answerd:  0      |
+     |       Total Questions:    4      |
+     |                                  |
+     |       Your Grade:         5      |
+      ==================================
+    
+Press CTRL + C to quit.
 ```
