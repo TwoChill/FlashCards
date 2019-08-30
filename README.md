@@ -13,4 +13,8 @@ This can be handy to train certain areas when you are out and about.
 
 Run ```git clone https://github.com/MdeFrance/Memorization_Programs.git```
 
-### Logical_Operatror_Recaller
+
+### Boolean_Expression_Recaller
+
+Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
+
