@@ -5,9 +5,9 @@ correct = 0
 incorrect = 0
 total = correct + incorrect
 
-print('=' * 30)
-print('Type "quit" to see your grade!')
-print('=' * 30)
+print('=' * 42)
+print('Type "quit" or "result" to see your grade!')
+print('=' * 42)
 
 
 def exit():
@@ -27,12 +27,6 @@ try:
 
         table = int(table)
 
-        if table in range(0, 1001):
-            # Convert the string table into a interger
-            table = int(table)
-        elif int(table) not in range(0, 1001):
-            print('\nSorry, I won\'t produces numbers higher then 1000, Smarty-Pants.')
-            exit()
     except ValueError:
         print("\nThat's not a number!\n")
         raise KeyboardInterrupt
@@ -46,11 +40,6 @@ try:
 
         vector = int(vector)
 
-        if vector in range(0, 1001):
-            # Convert the string vector into a interger
-            vector = int(vector)
-        elif int(vector) not in range(0, 1001):
-            print('\nSorry, I won\'t produces numbers higher then 1000, Smarty-Pants.')
     except ValueError:
         print("\nThat's not a number!\n")
         raise KeyboardInterrupt
@@ -61,9 +50,9 @@ except KeyboardInterrupt:
 if vector == 0 or table == 0:
     exit()
 
-text = (f'\n\n\nRecalling the table of {table} with a vector of {vector}.')
+text = (f'\n\n\nRecalling the table of {table} with a vector of {vector}')
 print(text)
-print('-' * len(text))     # A highlighter.
+print('=' * (len(text) - 3))     # A highlighter.
 
 
 while True:
@@ -74,31 +63,35 @@ while True:
 
     if xx == 1:
         print(f'\n\nWhat is {x} * {table}?')
-    else:   # 1 seems more dominant. xx gives this line more chances.
+    else:   # Nr.1 seems more dominant. xx gives this line more chances.
         print(f'\n\nWhat is {table} * {x}?')
 
     sum = x * table                         # Calculate the correct answer.
 
     try:
         try:
-            answer = str(input(':> '))          # Converters answer to a string
+            answer = str(input(':> '))
 
             if answer == 'quit' or answer == 'result':
                 raise KeyboardInterrupt
-            elif answer == "":                    # for error handling purposes.
+            elif answer == "":
                 answer = 0
 
-            answer = int(answer)                # Converters answer back to a integer
+            # Converters answer back to a integer
+            answer = int(answer)
 
-            if int(answer) not in range(0, 1001):
-                print(
-                    '\nSorry, I won\'t produces numbers higher then 1000, Smarty-Pants.')
-        except ValueError:
-            answer = 0
+        except ValueError:                      # If a string in answer..
+            answer = 0                          # .. converters to incorrect integer
 
     except KeyboardInterrupt:
         try:
             print('\nYour grade is a', int(correct * 10 / total), '/ 10\n')
+            # Makes the highlights the same charachter length as the string above.
+            if int(correct * 10 / total) == 10:
+                print('=' * 23)
+            else:
+                print('=' * 22)
+
             exit()
         except ZeroDivisionError:
             exit()
