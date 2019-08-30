@@ -83,4 +83,35 @@ Which multiplication table to recall? :> 10
 ```
 Up to which vector? :> 200
 ```
+* Train your memory as much as you like
+```
+Recalling the table of 10 with a vector of 200
+==============================================
 
+
+What is 10 * 61?
+:> 610
+
+That's correct!
+===============
+
+
+What is 103 * 10?
+:> 1030
+
+That's correct!
+===============
+```
+* Type "quit" or "result" to exit the script.
+```
+What is 103 * 10?
+:> quit
+
+Your grade is a 10 / 10
+
+=======================
+
+
+Thank you for trying!
+
+```
