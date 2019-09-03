@@ -2,6 +2,8 @@ import random
 import time
 
 name = "Boolean Expression Quiz"
+question_var = "Question:"
+answer_var = "Evaluates to?:"
 
 # Dictonary with questions on the LEFT and the answers to the Right.
 dic_quiz = {
@@ -70,29 +72,29 @@ def rapport():
     exit()
 
 
-def rapport_2():
+def perfect_grade():
     print(f'''
-      ==================================
+      ===================================
       Boolean Expression Quiz -  Results:
-      ==================================
+      ===================================
      |       Correct Answerd:    {correct_answerd}      |
      |       Incorrect Answerd:  {incorrect_answerd}      |
-     |       Total Questions:    {total_answerd}     |
+     |       Total Questions:    {total_answerd}      |
      |                                  |
-     |       Your Grade:         {grade}      |
+     |       Your Grade:         {grade}!    |
       ==================================
     ''')
     time.sleep(5)
     exit()
 
 
-def quit():
+def quit(grade):
     if ((correct_answerd > 10) or (incorrect_answerd > 10)) or (total_answerd > 10):
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
             grade = 0
-        rapport_2()
+        perfect_grade()
     else:
         try:
             grade = int(correct_answerd * 10 / total_answerd)
@@ -101,7 +103,7 @@ def quit():
         rapport()
 
 
-randomnr = random.randint(0, 26)
+randomnr = random.randint(0, len(dic_quiz))
 
 correct_answerd = 0
 total_answerd = 0
@@ -124,7 +126,7 @@ not_equal = 18, 21
 equal_to = 22, 25
 not_equal_and_equal_to = 18, 25
 
-# This print block is to prompt user to choose a catagory.
+# This block is to prompt user to choose a catagory.
 try:
     ranges = int(input(('''
     Which do you want to recall?
@@ -143,8 +145,8 @@ try:
 
     :> ''')))
 
-    # This block is used to 'convert' the users chooice,
-    # to the corrospondig range our program uses.
+    # This block is used to match the users choice,
+    # with the corrospondig dictionary ranges.
     if ranges == 1:
         print("\n\t:> All Questions")
         ranges = all_questions
@@ -200,7 +202,7 @@ while True:
     # Random number generated which correlates to a random question being asked.
     randomnr = random.randint(range_a(ranges), range_b(ranges))
 
-    # This will prevent the program from asking the same question.
+    # This will prevent the program from asking the 'remember to type quit' sentence twice in a row.
     if (previous_randomnr == randomnr) and (reminder_count == 1):
         reminder_count == 0
         continue
@@ -209,17 +211,19 @@ while True:
         reminder_count += 1
         continue
 
+    # Gets a random question(key) from the dic_quiz.
     question = list_value[randomnr]
 
-    print("\n\nQuestion:\t-->\t{}".format(question))
+    print(f"\n\n{question_var}\t-->\t{question}")
     try:
-        answer = input("Evaluates to?:\t-->\t").capitalize()
+        # Asks the user for an answer(input)
+        answer = input(f"{answer_var}\t-->\t").capitalize()
     except KeyboardInterrupt:
         exit()
-    if (answer == 'Quit') or (answer == 'Result'):
-        quit()
 
-    elif answer == dic_quiz.get(question):
+    if (answer == 'Quit') or (answer == 'Result'):
+        quit(grade)
+    elif answer == dic_quiz.get(question).lower():
         print("\n\n\t\t\t\tCORRECT!\n\t\t\t\t========")
         correct_answerd += 1
         total_answerd += 1
@@ -230,10 +234,10 @@ while True:
         except ZeroDivisionError:
             grade = 0
 
-    elif answer != dic_quiz.get(question):
+    elif answer != dic_quiz.get(question).lower():
         print("\n\n\t\t\t\tINCORRECT!!\n\t\t\t\t===========")
-        print("\nCorrect answer:\t-->\t\t", dic_quiz.get(question).upper())
-        print("\t\t\t\t", ("=" * len(dic_quiz.get(question))))
+        print("\nCorrect answer:\t-->\t\t" + dic_quiz.get(question).upper())
+        print("\t\t\t\t" + ("=" * len(dic_quiz.get(question))))
         total_answerd += 1
         previous_randomnr = randomnr
 
