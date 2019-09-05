@@ -16,9 +16,12 @@ This can be handy to train certain areas when you are out and about.
 
 
 
-# Boolean Expression Recaller
+# Boolean Expression Recaller / Class Drills Recaller
+
 
 * Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
+or
+* Run ```(YOUR PATCH)/Class_Drills_Recaller.py```
 
 * You can choose which questions you want to recall.
 ```
