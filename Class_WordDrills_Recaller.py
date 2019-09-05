@@ -14,7 +14,7 @@ dic_quiz = {
     "Inside the function in a class, ***** is a variable for the instance/object being accessed.": "self",
     "The concept that one class can inherit traits from another class, much like you and your parents.": "inheritance",
     "The concept that a class can be made up of other classes as parts, much like how a car has wheels.": "composition",
-    "A property classes have that are from cmposition an are usually variables.": "attribute",
+    "A property classes have that are from composition an are usually variables.": "attribute",
     "A phrase to say that something inherits from another, as in a 'salmon' is-a 'fish'.": "is-a",
     "A phrase to say that something is composed of other things or has a trait, as in 'a salmon has-a mouth'.": "has-a",
 
@@ -65,9 +65,9 @@ def perfect_grade():
       ===================================
      |       Correct Answerd:    {correct_answerd}      |
      |       Incorrect Answerd:  {incorrect_answerd}      |
-     |       Total Questions:    {total_answerd}      |
+     |       Total Questions:    {total_answerd}     |
      |                                  |
-     |       Your Grade:         {grade}!    |
+     |       Your Grade:         {grade}!     |
       ==================================
     ''')
     time.sleep(5)
@@ -75,7 +75,7 @@ def perfect_grade():
 
 
 def quit(grade):
-    if grade == 10:
+    if grade >= 10 or total_answerd >= 10:
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
@@ -101,7 +101,7 @@ list_value = [v for v in dic_quiz]
 
 # Range values to pass into the function later.
 # Users can choose between questions (ranges).
-all_questions = 2, 25
+all_questions = 0, 15
 class_word_drills = 0, 9
 class_phrase_drills = 10, 15
 
