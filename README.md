@@ -1,4 +1,4 @@
-# Memorization Scripts
+# FlashCards
 
 These scripts are for those who want to recall information.
 
@@ -11,7 +11,7 @@ This can be handy to train certain areas when you are out and about.
 
 ## Getting Started
 
-* Run ```git clone https://github.com/MdeFrance/Memorization_Programs.git```
+* Run ```git clone https://github.com/MdeFrance/FlashCards.git```
 
 
 
