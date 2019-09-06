@@ -90,19 +90,28 @@ def quit(grade):
         rapport_1dgt()
 
 
+def dic_quiz_reverse(dic_quiz):
+    copy = dic_quiz.copy().items()
+    dic_quiz.clear()
+    for k, v in copy:
+        dic_quiz[v] = k
+    return dic_quiz
+
+
+# Checks to see if the questions and answers should be reversed.
+if len(sys.argv) == 2 and sys.argv[1] == 'reverse':
+    dic_quiz = dic_quiz_reverse(dic_quiz)
+    print('1', dic_quiz)  # VALUE
+
+list_value = [v for v in dic_quiz]
+
+
 randomnr = random.randint(0, len(dic_quiz))
 
 correct_answerd = 0
 total_answerd = 0
 incorrect_answerd = total_answerd - correct_answerd
 grade = 0
-
-# Checks to see if the questions and answers should be reverd.
-if len(sys.argv) == 2 and sys.argv[1] == 'reverse':
-    list_value = [v for v in dic_quiz.values()]
-else:
-    list_value = [v for v in dic_quiz]
-
 
 # Range values to pass into the function later.
 # Users can choose between questions (ranges).
@@ -180,7 +189,7 @@ while True:
     if (answer == 'quit') or (answer == 'result'):
         quit(grade)
 
-    elif answer == dic_quiz.get(question).lower():
+    elif answer == list_value:
         print("\n\n\t\t\t\tCORRECT!\n\t\t\t\t========")
         correct_answerd += 1
         total_answerd += 1
@@ -191,10 +200,10 @@ while True:
         except ZeroDivisionError:
             grade = 0
 
-    elif answer != dic_quiz.get(question).lower():
+    elif answer != list_value:
         print("\n\n\t\t\t\tINCORRECT!!\n\t\t\t\t===========")
-        print("\nCorrect answer:\t-->\t\t" + dic_quiz.get(question).lower())
-        print("\t\t\t\t" + ("=" * len(dic_quiz.get(question))))
+        print(f"\nCorrect answer:\t-->\t\t", dic_quiz.get(question))
+        print("\t\t\t\t" + ("=" * len(question)))
         total_answerd += 1
         previous_randomnr = randomnr
 
