@@ -14,17 +14,19 @@ This can be handy to train certain areas when you are out and about.
 * Run ```git clone https://github.com/MdeFrance/FlashCards.git```
 
 
-
-
-# Boolean Expression / Class Drills Recaller
-[Boolean Expression]
+[Python Boolean Expression]
 
 *  Run ```(YOUR PATH)/Python_Boolean_Expression_Recaller.py ```
 
-[Class Drills]
+[Python Class Drills]
 
 *  Run ```(YOUR PATCH)/Python_Class_Drills_Recaller.py```
 *  Run```(YOUR PATCH)/Python_Class_Drills_Recaller.py reverse```
+ 
+[Multiplication Table Recaller]
+ 
+* Run ```(YOUR PATH)/Multiplication_Table_Recallper.py```
+
 
 ## How it works ##
 * You can choose which questions you want to recall.
@@ -75,8 +77,6 @@ Evaluates to?:	-->	quit
 ```
 # Multiplication Table Recaller
 
-
-* Run ```(YOUR PATH)/Multiplication_Table_Recallper.py```
 
 * You can choose which multiplication table to recall.
 ```
