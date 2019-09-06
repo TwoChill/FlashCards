@@ -101,10 +101,8 @@ def dic_quiz_reverse(dic_quiz):
 # Checks to see if the questions and answers should be reversed.
 if len(sys.argv) == 2 and sys.argv[1] == 'reverse':
     dic_quiz = dic_quiz_reverse(dic_quiz)
-    print('1', dic_quiz)  # VALUE
 
 list_value = [v for v in dic_quiz]
-
 
 randomnr = random.randint(0, len(dic_quiz))
 
@@ -176,7 +174,7 @@ while True:
         reminder_count += 1
         continue
 
-    # Gets a random question(key) from the dic_quiz.
+    # Gets a random question from the dic_quiz.
     question = list_value[randomnr]
 
     print(f"\n\n{question_var}\t-->\t{question}")
@@ -184,13 +182,14 @@ while True:
         # Asks the user for an answer(input)
         answer = input(f"{answer_var}\t-->\t").lower()
     except KeyboardInterrupt:
-        exit()
+        print('\n')
+        quit(grade)
 
     if (answer == 'quit') or (answer == 'result'):
         quit(grade)
 
     elif answer == list_value:
-        print("\n\n\t\t\t\tCORRECT!\n\t\t\t\t========")
+        print("\n\n\t\t\tCORRECT!\n\t\t\t\t========")
         correct_answerd += 1
         total_answerd += 1
         previous_randomnr = randomnr
@@ -201,9 +200,9 @@ while True:
             grade = 0
 
     elif answer != list_value:
-        print("\n\n\t\t\t\tINCORRECT!!\n\t\t\t\t===========")
-        print(f"\nCorrect answer:\t-->\t\t", dic_quiz.get(question))
-        print("\t\t\t\t" + ("=" * len(question)))
+        print("\n\n\t\t\tINCORRECT!!\n\t\t\t===========")
+        print(f"\nCorrect answer:\t-->\t" + dic_quiz.get(question))
+        print("\t\t\t" + ("=" * len(dic_quiz.get(question))))
         total_answerd += 1
         previous_randomnr = randomnr
 
