@@ -19,12 +19,12 @@ This can be handy to train certain areas when you are out and about.
 # Boolean Expression / Class Drills Recaller
 [Boolean Expression]
 
-*  Run ```(YOUR PATH)/Boolean_Expression_Recaller.py ```
+*  Run ```(YOUR PATH)/Python_Boolean_Expression_Recaller.py ```
 
 [Class Drills]
 
-*  Run ```(YOUR PATCH)/Class_Drills_Recaller.py```
-*  Run```(YOUR PATCH)/Class_Drills_Recaller.py reverse```
+*  Run ```(YOUR PATCH)/Python_Class_Drills_Recaller.py```
+*  Run```(YOUR PATCH)/Python_Class_Drills_Recaller.py reverse```
 
 ## How it works ##
 * You can choose which questions you want to recall.
