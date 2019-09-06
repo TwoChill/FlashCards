@@ -1,4 +1,5 @@
 import random
+import sys
 import time
 
 name = "Class Word Drills"
@@ -7,7 +8,7 @@ answer_var = "Your answer:"
 
 # Dictonary with questions on the LEFT and the answers to the Right.
 dic_quiz = {
-    "Tell Python to make a new typw of thing.": "class",
+    "Tell Python to make a new type of thing.": "class",
     "Two meanings: The most basic type of thing, and any instance of some thing.": "object",
     "What you get when you tell Python to create a class.": "instance",
     "How you define a function inside a class.": "def",
@@ -15,8 +16,8 @@ dic_quiz = {
     "The concept that one class can inherit traits from another class, much like you and your parents.": "inheritance",
     "The concept that a class can be made up of other classes as parts, much like how a car has wheels.": "composition",
     "A property classes have that are from composition an are usually variables.": "attribute",
-    "A phrase to say that something inherits from another, as in a 'salmon' is-a 'fish'.": "is-a",
-    "A phrase to say that something is composed of other things or has a trait, as in 'a salmon has-a mouth'.": "has-a",
+    "A phrase to say that something inherits from another, as in a 'salmon' is a 'fish'.": "is-a",
+    "A phrase to say that something is composed of other things or has a trait.'.": "has-a",
 
     "Make a class named X that is-a Y": "class X(Y)",
     "Make a class named X that has-a __init__ that takes self and J parameters.": "class X(object): def __init__(self, J)",
@@ -42,7 +43,7 @@ def range_b(string):
     return b
 
 
-def rapport():
+def rapport_1dgt():
     print(f'''
       ==================================
       Boolean Expression Quiz -  Results:
@@ -58,7 +59,7 @@ def rapport():
     exit()
 
 
-def perfect_grade():
+def rapport_2dgt():
     print(f'''
       ===================================
       Boolean Expression Quiz -  Results:
@@ -67,7 +68,7 @@ def perfect_grade():
      |       Incorrect Answerd:  {incorrect_answerd}      |
      |       Total Questions:    {total_answerd}     |
      |                                  |
-     |       Your Grade:         {grade}!     |
+     |       Your Grade:         {grade}      |
       ==================================
     ''')
     time.sleep(5)
@@ -80,13 +81,13 @@ def quit(grade):
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
             grade = 0
-        perfect_grade()
+        rapport_2dgt()
     else:
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
             grade = 0
-        rapport()
+        rapport_1dgt()
 
 
 randomnr = random.randint(0, len(dic_quiz))
@@ -96,8 +97,12 @@ total_answerd = 0
 incorrect_answerd = total_answerd - correct_answerd
 grade = 0
 
-# Source: quora.com/# How-do-I-convert-a-dictionary-to-a-list-in-Python
-list_value = [v for v in dic_quiz]
+# Checks to see if the questions and answers should be reverd.
+if len(sys.argv) == 2 and sys.argv[1] == 'reverse':
+    list_value = [v for v in dic_quiz.values()]
+else:
+    list_value = [v for v in dic_quiz]
+
 
 # Range values to pass into the function later.
 # Users can choose between questions (ranges).
