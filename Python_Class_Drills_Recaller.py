@@ -15,13 +15,13 @@ dic_quiz = {
     "Inside the function in a class, ***** is a variable for the instance/object being accessed.": "self",
     "The concept that one class can inherit traits from another class, much like you and your parents.": "inheritance",
     "The concept that a class can be made up of other classes as parts, much like how a car has wheels.": "composition",
-    "A property classes have that are from composition an are usually variables.": "attribute",
+    "A property classes have that are from composition and are usually variables.": "attribute",
     "A phrase to say that something inherits from another, as in a 'salmon' is a 'fish'.": "is-a",
     "A phrase to say that something is composed of other things or has a trait.'.": "has-a",
 
     "Make a class named X that is-a Y": "class X(Y)",
     "Make a class named X that has-a __init__ that takes self and J parameters.": "class X(object): def __init__(self, J)",
-    "Make a class named X that has-a function named M that takes self and J parameters.": "class x(object): def M(self, J):",
+    "Make a class named X that has-a function named M that takes self and J parameters.": "class x(object): def M(self, J)",
     "Set foo to a instance of class X": "foo = X()",
     "From foo, get the M function, and call it with parameters self, J.": "foo.M(J)",
     "From foo, get the K attribute, and set it to Q.": "foo.K = Q",
@@ -68,7 +68,7 @@ def rapport_2dgt():
      |       Incorrect Answerd:  {incorrect_answerd}      |
      |       Total Questions:    {total_answerd}     |
      |                                  |
-     |       Your Grade:         {grade}      |
+     |       Your Grade:         {grade}     |
       ==================================
     ''')
     time.sleep(5)
@@ -76,7 +76,7 @@ def rapport_2dgt():
 
 
 def quit(grade):
-    if grade >= 10 or total_answerd >= 10:
+    if grade == 10 or total_answerd >= 10 or incorrect_answerd >= 10 or correct_answerd >= 10:
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
@@ -95,6 +95,7 @@ def dic_quiz_reverse(dic_quiz):
     dic_quiz.clear()
     for k, v in copy:
         dic_quiz[v] = k
+
     return dic_quiz
 
 
@@ -158,14 +159,16 @@ print("Type 'quit' or 'result' to exit!")
 print("=" * 32)
 
 while True:
-    # reminder_count is used to skip the 'remember to type quit' print function twice.
+    # reminder_count is used to skip the,
+    # 'remember to type quit' print function twice.
     previous_randomnr = randomnr
     reminder_count = 0
 
     # Random number generated which correlates to a random question being asked.
     randomnr = random.randint(range_a(ranges), range_b(ranges))
 
-    # This will prevent the program from asking the 'remember to type quit' sentence twice in a row.
+    # This will prevent the program from asking,
+    # the 'remember to type quit'sentence twice in a row.
     if (previous_randomnr == randomnr) and (reminder_count == 1):
         reminder_count == 0
         continue
@@ -187,9 +190,8 @@ while True:
 
     if (answer == 'quit') or (answer == 'result'):
         quit(grade)
-
-    elif answer == list_value:
-        print("\n\n\t\t\tCORRECT!\n\t\t\t\t========")
+    elif answer == dic_quiz.get(question).lower():
+        print("\n\n\t\t\tCORRECT!\n\t\t\t========")
         correct_answerd += 1
         total_answerd += 1
         previous_randomnr = randomnr
@@ -199,9 +201,9 @@ while True:
         except ZeroDivisionError:
             grade = 0
 
-    elif answer != list_value:
+    elif answer != dic_quiz.get(question).lower():
         print("\n\n\t\t\tINCORRECT!!\n\t\t\t===========")
-        print(f"\nCorrect answer:\t-->\t" + dic_quiz.get(question))
+        print(f"\nCorrect answer:\t-->\t" + dic_quiz.get(question).lower())
         print("\t\t\t" + ("=" * len(dic_quiz.get(question))))
         total_answerd += 1
         previous_randomnr = randomnr
