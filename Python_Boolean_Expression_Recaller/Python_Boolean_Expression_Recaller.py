@@ -1,31 +1,44 @@
 import random
-import sys
 import time
 
-name = "Class Word Drills"
+name = "Boolean Expression Quiz"
 question_var = "Question:"
-answer_var = "Your answer:"
+answer_var = "Evaluates to?:"
 
-# Dictonary with questions on the LEFT and the answers to the Right.
+# Dictionary with questions on the LEFT and the answers to the Right.
 dic_quiz = {
-    "Tell Python to make a new type of thing.": "class",
-    "Two meanings: The most basic type of thing, and any instance of some thing.": "object",
-    "What you get when you tell Python to create a class.": "instance",
-    "How you define a function inside a class.": "def",
-    "Inside the function in a class, ***** is a variable for the instance/object being accessed.": "self",
-    "The concept that one class can inherit traits from another class, much like you and your parents.": "inheritance",
-    "The concept that a class can be made up of other classes as parts, much like how a car has wheels.": "composition",
-    "A property classes have that are from composition and are usually variables.": "attribute",
-    "A phrase to say that something inherits from another, as in a 'salmon' is a 'fish'.": "is-a",
-    "A phrase to say that something is composed of other things or has a trait.'.": "has-a",
+    "not False": "True",
+    "not True": "False",
 
-    "Make a class named X that is-a Y": "class X(Y)",
-    "Make a class named X that has-a __init__ that takes self and J parameters.": "class X(object): def __init__(self, J)",
-    "Make a class named X that has-a function named M that takes self and J parameters.": "class x(object): def M(self, J)",
-    "Set foo to a instance of class X": "foo = X()",
-    "From foo, get the M function, and call it with parameters self, J.": "foo.M(J)",
-    "From foo, get the K attribute, and set it to Q.": "foo.K = Q",
+    "True or False": "True",
+    "True or True": "True",
+    "False or True": "True",
+    "False or False": "False",
 
+    "True and False": "False",
+    "True and True": "True",
+    "False and True": "False",
+    "False and False": "False",
+
+    "not(True or False)": "False",
+    "not(True or True)": "False",
+    "not(False or True)": "False",
+    "not(False or False)": "True",
+
+    "not(True and False)": "True",
+    "not(True and True)": "False",
+    "not(False and True)": "True",
+    "not(False and False)": "True",
+
+    "1 != 0": "True",
+    "1 != 1": "False",
+    "0 != 1": "True",
+    "0 != 0": "False",
+
+    "1 == 0": "False",
+    "1 == 1": "True",
+    "0 == 1": "False",
+    "0 == 0": "True",
 }
 
 print("\n")
@@ -43,7 +56,7 @@ def range_b(string):
     return b
 
 
-def rapport_1dgt():
+def rapport():
     print(f'''
       ==================================
       Boolean Expression Quiz -  Results:
@@ -59,16 +72,16 @@ def rapport_1dgt():
     exit()
 
 
-def rapport_2dgt():
+def perfect_grade():
     print(f'''
       ===================================
       Boolean Expression Quiz -  Results:
       ===================================
      |       Correct Answerd:    {correct_answerd}      |
      |       Incorrect Answerd:  {incorrect_answerd}      |
-     |       Total Questions:    {total_answerd}     |
+     |       Total Questions:    {total_answerd}      |
      |                                  |
-     |       Your Grade:         {grade}     |
+     |       Your Grade:         {grade}!    |
       ==================================
     ''')
     time.sleep(5)
@@ -76,34 +89,19 @@ def rapport_2dgt():
 
 
 def quit(grade):
-    if grade == 10 or total_answerd >= 10 or incorrect_answerd >= 10 or correct_answerd >= 10:
+    if ((correct_answerd > 10) or (incorrect_answerd > 10)) or (total_answerd > 10):
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
             grade = 0
-        rapport_2dgt()
+        perfect_grade()
     else:
         try:
             grade = int(correct_answerd * 10 / total_answerd)
         except ZeroDivisionError:
             grade = 0
-        rapport_1dgt()
+        rapport()
 
-
-def dic_quiz_reverse(dic_quiz):
-    copy = dic_quiz.copy().items()
-    dic_quiz.clear()
-    for k, v in copy:
-        dic_quiz[v] = k
-
-    return dic_quiz
-
-
-# Checks to see if the questions and answers should be reversed.
-if len(sys.argv) == 2 and sys.argv[1] == 'reverse':
-    dic_quiz = dic_quiz_reverse(dic_quiz)
-
-list_value = [v for v in dic_quiz]
 
 randomnr = random.randint(0, len(dic_quiz))
 
@@ -112,11 +110,21 @@ total_answerd = 0
 incorrect_answerd = total_answerd - correct_answerd
 grade = 0
 
+# Source: quora.com/# How-do-I-convert-a-dictionary-to-a-list-in-Python
+list_value = [v for v in dic_quiz]
+
 # Range values to pass into the function later.
 # Users can choose between questions (ranges).
-all_questions = 0, 15
-class_word_drills = 0, 9
-class_phrase_drills = 10, 15
+all_questions = 2, 25
+_or_ = 2, 5
+_and_ = 6, 9
+or_and = 2, 9
+not_or = 10, 13
+not_and = 14, 17
+not_or_not_and = 10, 17
+not_equal = 18, 21
+equal_to = 22, 25
+not_equal_and_equal_to = 18, 25
 
 # This block is to prompt user to choose a catagory.
 try:
@@ -125,8 +133,15 @@ try:
     ===========================
 
      1. All Questions
-     2. Class Word Drills
-     3. Class Phrase Drills
+     2. Or
+     3. And
+     4. Or & And
+     5. Not(_or_)
+     6. Not (_and_)
+     7. Not(_or_) & Not (_and_)
+     8. Not Equal (!=)
+     9. Equal To (==)
+    10. Not Equal (!=) & Equal To (==)
 
     :> ''')))
 
@@ -136,15 +151,36 @@ try:
         print("\n\t:> All Questions")
         ranges = all_questions
     elif ranges == 2:
-        print("\n\t:> Class Word Drills")
-        ranges = class_word_drills
+        print("\n\t:> Or")
+        ranges = _or_
     elif ranges == 3:
-        print("\n\t:> Class Phrase Drills")
-        ranges = class_phrase_drills
+        print("\n\t:> Or & And")
+        ranges = _and_
+    elif ranges == 4:
+        print("\n\t:> Or & And")
+        ranges = or_and
+    elif ranges == 5:
+        print("\n\t:> Not(_or_)")
+        ranges = not_or
+    elif ranges == 6:
+        print("\n\t:> Not (_and_)")
+        ranges = not_and
+    elif ranges == 7:
+        print("\n\t:> Not(_or_) & Not (_and_)")
+        ranges = not_or_not_and
+    elif ranges == 8:
+        print("\n\t:> Not Equal (!=)")
+        ranges = not_equal
+    elif ranges == 9:
+        print("\n\t:> Equal To (==)")
+        ranges = equal_to
+    elif ranges == 10:
+        print("\n\t:> Not Equal (!=) & Equal To (==)")
+        ranges = not_equal_and_equal_to
     else:
         print("\n\t:> All Questions")
         ranges = all_questions
-except:
+except Exception as e:
     if ValueError:
         print("\n\t:> All Questions")
         ranges = all_questions
@@ -159,16 +195,14 @@ print("Type 'quit' or 'result' to exit!")
 print("=" * 32)
 
 while True:
-    # reminder_count is used to skip the,
-    # 'remember to type quit' print function twice.
+    # reminder_count is used to skip the 'remember to type quit' print function twice.
     previous_randomnr = randomnr
     reminder_count = 0
 
     # Random number generated which correlates to a random question being asked.
     randomnr = random.randint(range_a(ranges), range_b(ranges))
 
-    # This will prevent the program from asking,
-    # the 'remember to type quit'sentence twice in a row.
+    # This will prevent the program from asking the 'remember to type quit' sentence twice in a row.
     if (previous_randomnr == randomnr) and (reminder_count == 1):
         reminder_count == 0
         continue
@@ -177,21 +211,20 @@ while True:
         reminder_count += 1
         continue
 
-    # Gets a random question from the dic_quiz.
+    # Gets a random question(key) from the dic_quiz.
     question = list_value[randomnr]
 
     print(f"\n\n{question_var}\t-->\t{question}")
     try:
         # Asks the user for an answer(input)
-        answer = input(f"{answer_var}\t-->\t").lower()
+        answer = input(f"{answer_var}\t-->\t").capitalize()
     except KeyboardInterrupt:
-        print('\n')
-        quit(grade)
+        exit()
 
-    if (answer == 'quit') or (answer == 'result'):
+    if (answer == 'Quit') or (answer == 'Result'):
         quit(grade)
     elif answer == dic_quiz.get(question).lower():
-        print("\n\n\t\t\tCORRECT!\n\t\t\t========")
+        print("\n\n\t\t\t\tCORRECT!\n\t\t\t\t========")
         correct_answerd += 1
         total_answerd += 1
         previous_randomnr = randomnr
@@ -202,9 +235,9 @@ while True:
             grade = 0
 
     elif answer != dic_quiz.get(question).lower():
-        print("\n\n\t\t\tINCORRECT!!\n\t\t\t===========")
-        print(f"\nCorrect answer:\t-->\t" + dic_quiz.get(question).lower())
-        print("\t\t\t" + ("=" * len(dic_quiz.get(question))))
+        print("\n\n\t\t\t\tINCORRECT!!\n\t\t\t\t===========")
+        print("\nCorrect answer:\t-->\t\t" + dic_quiz.get(question).upper())
+        print("\t\t\t\t" + ("=" * len(dic_quiz.get(question))))
         total_answerd += 1
         previous_randomnr = randomnr
 
