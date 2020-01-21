@@ -2,10 +2,9 @@ from pathlib import Path
 import platform
 import os
 import random
-import curses
 
 
-class myExam(object):
+class MyExam(object):
     ''' To create own exam'''
 
     def __init__(self):
@@ -13,7 +12,7 @@ class myExam(object):
         self.answer = ''
 
     def addNew(self, newQuestion=None, newAnswer=None):
-        ''' Add new Question and / or Answer'''
+        ''' Add a new Question and an Answer'''
 
         if newQuestion is None:
             newQuestion = []
@@ -45,6 +44,34 @@ def getScriptName():
     scriptName = filePath[(len(directoryPath) + 1):-len(fileExtention)]
 
     return scriptName
+
+
+def saveToFile(isTrue, addQuestion, questionNumber):
+    ''' To save Q and A to a file '''
+
+    if isTrue is True:
+        with open("YourExam.txt", 'w', encoding="utf-8") as f:
+            strToFile = "{}\tQuestion:\t{}\n\tAnswer:\t\t{}\n\n".format(
+                questionNumber, addQuestion[questionNumber][0], addQuestion[questionNumber][1])
+
+            f.write(strToFile)
+
+
+def appendToFile(isTrue, addQuestion, questionNumber):
+    ''' To append Q and A to a file '''
+
+    if isTrue is True:
+        with open("YourExam.txt", 'a+', encoding="utf-8") as f:
+            strToFile = "{}\tQuestion:\t{}\n\tAnswer:\t\t{}\n\n".format(
+                questionNumber, addQuestion[questionNumber][0], addQuestion[questionNumber][1])
+
+            f.write(strToFile)
+
+
+def readFromFile(isTrue):
+    if isTrue is True:
+        with open("YourExam.txt", "r") as f:
+            f.read("YourExam.txt")
 
 
 def sys_clear():
