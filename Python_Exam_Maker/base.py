@@ -1,7 +1,9 @@
-from pathlib import Path
 import platform
 import os
 import random
+
+# Questions and Answers are stored with this type of file extention.
+fileExtention = '.txt'
 
 
 class MyExam(object):
@@ -35,15 +37,23 @@ class MyExam(object):
         return self.question[randomNr], randomNr
 
 
-def getScriptName():
+def getScriptInfo(pathFileName):
     ''' Return script name'''
 
-    filePath = str(Path(__file__).absolute())
-    fileExtention = filePath[len(filePath) - 3:]
+    filePath = str(pathFileName.absolute())
+    fileExt = filePath[len(filePath) - 3:]
     directoryPath = str(os.path.dirname(os.path.abspath(__file__)))
     scriptName = filePath[(len(directoryPath) + 1):-len(fileExtention)]
 
-    return scriptName
+    return [filePath, fileExt, directoryPath, scriptName]
+
+
+# class FileHandling(object):
+#     ''' Everything to do with files '''
+#     # Save Append Read Files
+#     # Lists certain
+#     # Naming there 'YouExam' Files
+#     pass
 
 
 def saveToFile(isTrue, addQuestion, questionNumber):
@@ -69,6 +79,8 @@ def appendToFile(isTrue, addQuestion, questionNumber):
 
 
 def readFromFile(isTrue):
+    ''' Read Exam Questions '''
+
     if isTrue is True:
         with open("YourExam.txt", "r") as f:
             f.read("YourExam.txt")
