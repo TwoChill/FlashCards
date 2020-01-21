@@ -1,12 +1,11 @@
 from pathlib import Path
-import os
-import base as base
+import base
 import time
-
 import traceback
 import logging
 
-scriptName = base.getScriptName()
+# scriptName = base.getScriptInfo(Path(__file__))[3]
+
 
 addQuestion = {}
 addAnswers = {}
@@ -28,7 +27,8 @@ obj = base.MyExam()
 
 # Use class methode to add a question to dict: 'addQuestion'
 try:
-    alreadySavedToFile = 0
+
+    questionNumber = 0
 
     while True:
 
@@ -48,22 +48,28 @@ try:
             answer = input('\n\tSave Q and A to file? (Y/N) :> ')
 
             if answer in answerYes:
-                if alreadySavedToFile == 0:
-                    alreadySavedToFile += 1
-                    base.saveToFile(True, addQuestion, alreadySavedToFile)
+                # Look for .txt file
+                # List all .txt files
+                # ask if user whats to overwrtie an exicting one
+                # YES = write
+                # NO = Append
+                if questionNumber == 0:
+                    questionNumber += 1
+                    base.saveToFile(True, addQuestion, questionNumber)
                 else:
-                    base.appendToFile(True, addQuestion, alreadySavedToFile)
+                    base.appendToFile(True, addQuestion, questionNumber)
 
                 try:
-                    print("\tExam Question {}:\tSaved!".format(alreadySavedToFile))
+                    print("\tExam Question {}:\tSaved!".format(questionNumber))
                 except Exception as e:
-                    print("Exam Question{}:\tNot Saved!".format(alreadySavedToFile))
+                    print("Exam Question{}:\tNot Saved!".format(questionNumber))
                     time.sleep(2)
                     logging.error(traceback.format_exc())
 
                 time.sleep(2)
                 break
             elif answer in answerNo:
+                questionNumber -= 1
                 break
             else:
                 print("\n\t'" + answer + "' is not a valid input!")
@@ -73,7 +79,7 @@ try:
         answer = input('\nAdd another Q and A? (Y/N) :> ')
 
         # Variable also used to count the number of question added.
-        alreadySavedToFile += 1
+        questionNumber += 1
 
         if answer in answerYes:
             base.sys_clear()
