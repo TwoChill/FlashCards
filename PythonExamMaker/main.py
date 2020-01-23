@@ -1,26 +1,18 @@
-from pathlib import Path
 import base
-import time
 import traceback
 import logging
-
-# scriptName = base.getScriptInfo(Path(__file__))[1]
-
+import time
 
 addQuestion = {}
 addAnswers = {}
-answerYes = ('Y', 'y', 'YES', 'YEs', 'Yes', 'yEs', 'yeS', 'yes')
-answerNo = ('N', 'NO', 'n', 'No', 'nO')
 questionNumber = 0
 isTrue = False
-
-# Clears screen
-base.sys_clear()
 
 # Create instance of class myExam
 obj = base.MyExam()
 fileHandling = base.FileHandling(True, addQuestion, questionNumber)
 
+base.sys_clear()
 # Show how to use and recommendation on how to use properly.
 # Like if you create a new exam, try to make it about one topic only (classExam.txt or stringManipulation)
 
@@ -29,6 +21,9 @@ fileHandling = base.FileHandling(True, addQuestion, questionNumber)
 # If so, ask user to continue with *.txt-file or create a new one.
 
 # Use class methode to add a question to dict: 'addQuestion'
+
+fileHandling.createFolder()
+
 try:
 
     while True:
@@ -43,13 +38,11 @@ try:
             len(addQuestion))][0], '\nAnswer:\t\t', addQuestion[(len(addQuestion))][1])
 
         # File handeling
-        base.FileHandling.createExamDir
-
         while True:
 
             answer = input('\n\tSave Q and A to file? (Y/N) :> ')
 
-            if answer in answerYes:
+            if answer in base.answerYes:
                 fileMode = base.FileHandling.foundFile()
                 isTrue = True
 
@@ -71,7 +64,7 @@ try:
 
                 time.sleep(2)
                 break
-            elif answer in answerNo:
+            elif answer in base.answerNo:
                 questionNumber -= 1
                 break
             else:
@@ -84,10 +77,10 @@ try:
         # Variable also used to count the number of question added.
         questionNumber += 1
 
-        if answer in answerYes:
+        if answer in base.answerYes:
             base.sys_clear()
             continue
-        elif answer in answerNo:
+        elif answer in base.answerNo:
             input('\nPress enter to quit')
             break
         else:
