@@ -22,6 +22,7 @@ base.sys_clear()
 
 # Use class methode to add a question to dict: 'addQuestion'
 
+# Create Folders
 fileHandling.createFolder()
 
 try:
@@ -43,7 +44,7 @@ try:
             answer = input('\n\tSave Q and A to file? (Y/N) :> ')
 
             if answer in base.answerYes:
-                fileMode = base.FileHandling.foundFile()
+                fileMode = fileHandling.foundFile()
                 isTrue = True
 
                 if questionNumber == 0:
