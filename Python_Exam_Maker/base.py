@@ -56,50 +56,11 @@ class FileHandling(object):
         self.questionNumber = questionNumber
         self.main_Folder_Path_Path = ''
 
-    def createFolder(self):
-        ''' Create a folder in current file directory if non exit '''
+    @staticmethod
+    def createQnAfile(folderPath):
+        ''' Create Q and A file '''
 
-        # Make Parent Folder ([3] = Directory Path of This Script)
-        print('This is CWD:', os.cwd())
-
-        os.chdir(f'{directoryPath}')
-
-        # Create a standard Parent Folder
-        try:
-            nameFolder = 'My_Exams'
-            os.mkdir(f'{nameFolder}')
-        except FileExistsError:
-            pass
-
-        main_Folder_Path_Path = f'{directoryPath}/{nameFolder}'
-
-    #     # If empty create Exam folder (Python)
-    #     if not os.listdir(main_Folder_Path_Path):
-    #         while True:
-    #             answer = input(
-    #                 '\nWhat\'s the foldername in which you\'ll store your exam files?\n(Ex: \'Python\' or \'Ruby\') :> ')
-    #             answerCheck = input(f'\nIs \'{answer}\' correct? (Y/N) :> ')
-    #             if answerCheck in answerNo:
-    #                 continue
-    #             else:
-    #                 os.mkdir(f'{main_Folder_Path_Path}/{answer}')
-    #                 print(f'\nYour \'{answer} folder\' has been made!')
-    #                 time.sleep(3)
-    #                 break
-    #     else:
-    #         print('\nFound the following exam\'s:\n\n')
-
-    #         #########################################################
-    #         ## Credits to User Adam on StackOverFlow. !Link Below! ##
-    #         #########################################################
-    #         paths = DisplayablePath.make_tree(Path(main_Folder_Path_Path))
-    #         for path in paths:
-    #             print(path.displayable())
-    #         #########################################################
-
-    #     return main_Folder_Path_Path, nameFolder
-
-    #     os.chdir(f'{main_Folder_Path_Path}')
+        pass
 
     # # Save Q and A to file
     def saveToFile(self, addQuestion, questionNumber, fileMode):
@@ -118,13 +79,16 @@ class FileHandling(object):
             f.read("YourExam.txt")
 
     @staticmethod
-    def deleteFolder(folderPath, main_Folder_Name):
+    def deleteFolder(folderPath):
         ''' Deletes folders and it's content'''
 
+        sys.stdout.write('/n')
+        sys.stdout.flush()
+
         # A deleting animation
-        chars = "/—\|/—\|/—\|/—\|/—\|"
+        chars = "/—\|" * 6
         for char in chars:
-            sys.stdout.write('\r'+'DELETING...'+char)
+            sys.stdout.write('\r' + 'DELETING...' + char)
             time.sleep(.1)
             sys.stdout.flush()
 
@@ -137,7 +101,7 @@ class FileHandling(object):
         sys_clear()
 
     @ staticmethod
-    def createMainFolder():
+    def createExam():
         ''' Create main folder AND CHILD folder '''
         # Change to parent folder
         os.chdir(f'{directoryPath}')
@@ -155,8 +119,12 @@ class FileHandling(object):
 
             keepDirTreeUp(1, main_Folder_Name, exam_Folder_Name)
 
-            answerCheck = input(
-                f'\nIs \'{main_Folder_Name}\' correct? (Y/N) :> ')
+            # Checks if foldername exists else skips this print statement.
+            if not main_Folder_Name in [f for f in os.listdir(directoryPath) if not '.py' in f]:
+                answerCheck = input(
+                    f'\nIs \'{main_Folder_Name}\' correct? (Y/N) :> ')
+            else:
+                answerCheck = answerYes
 
             if answerCheck in answerNo:
                 continue
@@ -190,7 +158,7 @@ class FileHandling(object):
 
                                 # Delete directory and it's content.
                                 FileHandling.deleteFolder(
-                                    f'{directoryPath}/{main_Folder_Name}', main_Folder_Name)
+                                    f'{directoryPath}/{main_Folder_Name}')
                                 break
                         else:
                             sys_clear()
@@ -222,46 +190,59 @@ class FileHandling(object):
 
                     keepDirTreeUp(3, main_Folder_Name, exam_Folder_Name)
 
-                    input('\nENTER to continue... ')
+                    print('\nNow let\'s create a Q & A file.')
+                    input('\n\nENTER to continue... ')
                     sys_clear()
                     break
         else:
-            print('\nFound the following exam\'s:\n')
+            print('\nFound the following folder(s)')
 
-            ##########################################################
-            ## Credits to User Adam on StackOverFlow. !Link Below! ###
-            ##########################################################
-            print('-' * 30)                                          #
+            ###########################################################
+            ### Credits to User Adam on StackOverFlow. !Link Below! ###
+            ###########################################################
+            print('-' * 30)                                           #
             paths = DisplayablePath.make_tree(Path(main_Folder_Path))
-            for path in paths:                                       #
-                print(path.displayable())                            #
-            print('-' * 30)                                          #
-            ##########################################################
+            for path in paths:                                        #
+                print(path.displayable())                             #
+            print('-' * 30)                                           #
+            ###########################################################
 
             while True:
-                keepDirTreeUp(0, None, None)
 
-                if fileExtention in [f for f in os.listdir(main_Folder_Path)]:
-                    print('>> One')
+                if fileExtention in str([f for f in os.listdir(main_Folder_Path)]):
                     answer = int(input(f'''\nDo you want to:
-1. Create a new exam file? (second option = which folder inside '{main_Folder_Name}'.)
-2. Create a new exam folder inside '{answer}'?
+
+1. Create a new Q and A file ? (second option = which folder inside '{main_Folder_Name}'.)
+2. Create a new exam folder inside '{main_Folder_Name}'?
 3. Delete an exam file?
 4. Delete an exam folder?
 
 5. Continue with an exiting exam file? (Shows only if there is a file with f'{fileExtention}')
 
-:> '''))
+:> '''))            break
                 else:
-                    print('>> Two')
+                    print(f'\n>> No exam{fileExtention} found! <<')
                     answer = int(input(f'''\nDo you want to:
-1. Create a new exam file? (second option = which folder inside '{answer}'.)
-2. Create a new exam folder inside '{answer}'?
+                    
+1. Create a new exam file? (second option = which folder inside '{main_Folder_Name}'.)
+2. Create a new exam folder inside '{main_Folder_Name}'?
 3. Delete an exam file?
 4. Delete an exam folder?
 
 :> '''))
 
+                    break
+            
+            if answer == 1:
+                pass
+            if answer == 2:
+                pass
+            if answer == 3:
+                pass
+            if answer == 4:
+                pass
+            if answer == 5:
+                pass
         return main_Folder_Path, main_Folder_Name
 
 
