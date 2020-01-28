@@ -20,10 +20,10 @@ obj = base.MyExam()
 
 try:
     # create Main Folder
-    base.FileHandling.createMainFolder()
+    base.FileHandling.createExam()
 
-    # create Exam Folder
-    main_Folder_Path = base.FileHandling.createExamFolder()
+    # create Exam File
+
     questionNumber = 0
 
     while True:
@@ -42,16 +42,14 @@ try:
             answer = input('\n\tSave Q and A to file? (Y/N) :> ')
 
             if answer in base.answerYes:
-                # Look for .txt file
-                # List all .txt files
-                # ask if user whats to overwrtie an exicting one
-                # YES = write
-                # NO = Append
+
                 if questionNumber == 0:
                     questionNumber += 1
-                    base.FileHandling.saveToFile(True, addQuestion, questionNumber, 'w+')
+                    base.FileHandling.saveToFile(
+                        True, addQuestion, questionNumber, 'w+')
                 else:
-                    base.FileHandling.saveToFile(True, addQuestion, questionNumber, 'a+')
+                    base.FileHandling.saveToFile(
+                        True, addQuestion, questionNumber, 'a+')
 
                 try:
                     print("\tExam Question {}:\tSaved!".format(questionNumber))
