@@ -23,7 +23,7 @@ try:
     base.FileHandling.createMainFolder()
 
     # create Exam Folder
-    Main_Folder_Path = base.FileHandling.createExamFolder()
+    main_Folder_Path = base.FileHandling.createExamFolder()
     questionNumber = 0
 
     while True:
