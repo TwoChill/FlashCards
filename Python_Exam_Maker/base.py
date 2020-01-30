@@ -1,249 +1,135 @@
-from pathlib import Path
-import platform
 import os
-# from os.path import isfile, join
+import sys
 import time
 import random
-import sys
+import platform
+from pathlib import Path
+from os.path import isfile, join
 
-# Questions and Answers are stored with this type of file extention.
-fileExtention = '.txt'
-filePath = str(Path(__file__).absolute())
-fileExt = filePath[len(filePath) - 3:]
-directoryPath = str(os.path.dirname(os.path.abspath(__file__)))
-scriptName = filePath[(len(directoryPath) + 1):-len(fileExtention)]
-answerYes = ('Y', 'y', 'YES', 'YEs', 'Yes', 'yEs', 'yeS', 'yes')
 answerNo = ('N', 'NO', 'n', 'No', 'nO')
+answerYes = ('Y', 'y', 'YES', 'YEs', 'Yes', 'yEs', 'yeS', 'yes')
 
 
-class MyExam(object):
-    ''' To create own exam'''
+def startMenu():
+    ''' Option menu '''
 
-    def __init__(self):
-        self.question = ''
-        self.answer = ''
+    keepDirTreeUp()
 
-    def addNew(self, newQuestion=None, newAnswer=None):
-        ''' Add a new Question and an Answer'''
+    list = ['Create New Exam', 'Rename Exam', 'Delete Exam',
+            'Create new Q and A', 'Rename Q and A', 'Delete Q and A']
 
-        if newQuestion is None:
-            newQuestion = []
-        else:
-            self.question = newQuestion
+    for num, item in enumerate(list, 1):
+        print(str(num) + '. ' + item)
 
-        if newAnswer is None:
-            newAnswer = []
-        else:
-            self.answer = newAnswer
+    try:
+        menuOutput = int(input("\n:> "))
+    except ValueError:
+        keepDirTreeUp()
+        print('That\'s not what I expected. Try Again')
+        time.sleep(3)
+        startMenu()
 
-        return [self.question, self.answer]
-
-    def randomQuestion(self, question):
-        ''' Randomize questions '''
-
-        randomNr = random.randint(1, len(question))
-        print('This is random nr: ', randomNr)
-
-        return self.question[randomNr], randomNr
+    return menuOutput
 
 
-class FileHandling(object):
-    ''' Everything to do with files '''
+def fileHandeling(menuOutput):
+    ''' Handels everything to do with files '''
 
-    def __init__(self, isTrue, addQuestion, questionNumber):
-        self.isTrue = isTrue
-        self.addQuestion = addQuestion
-        self.questionNumber = questionNumber
-        self.main_Folder_Path_Path = ''
-
-    @staticmethod
-    def createQnAfile(folderPath):
-        ''' Create Q and A file '''
-
+    if menuOutput == 1:
+        pass
+    if menuOutput == 2:
+        pass
+    if menuOutput == 3:
+        deleteExam(menuOutput)
+    if menuOutput == 4:
+        pass
+    if menuOutput == 5:
+        pass
+    if menuOutput == 6:
         pass
 
-    # # Save Q and A to file
-    def saveToFile(self, addQuestion, questionNumber, fileMode):
-        ''' To save Q and A to a file '''
 
-        with open("YourExam.txt", fileMode, encoding="utf-8") as f:
-            strToFile = "{}\tQuestion:\t{}\n\tAnswer:\t\t{}\n\n".format(
-                questionNumber, addQuestion[questionNumber][0], addQuestion[questionNumber][1])
+def createMain():
+    ''' Create main directory '''
 
-            f.write(strToFile)
+    try:
+        parent_Folder_Name = 'My_Exams'
+        os.mkdir(f'{parent_Folder_Name}')
+    except FileExistsError:
+        pass
 
-    def readFromFile(self, fileMode):
-        ''' Read Exam Questions '''
+    # Change directory to My_Exams
+    os.chdir(os.getcwd() + '/' + parent_Folder_Name)
 
-        with open("YourExam.txt", "r") as f:
-            f.read("YourExam.txt")
+    # Save directory path
+    parent_Folder_Path = os.getcwd() + '/' + parent_Folder_Name
 
-    @staticmethod
-    def deleteFolder(folderPath):
-        ''' Deletes folders and it's content'''
+    return parent_Folder_Name, parent_Folder_Path
 
-        sys.stdout.write('/n')
-        sys.stdout.flush()
 
-        # A deleting animation
-        chars = "/—\|" * 6
-        for char in chars:
-            sys.stdout.write('\r' + 'DELETING...' + char)
-            time.sleep(.1)
-            sys.stdout.flush()
+def createExam(parentPath):
+    ''' Create child folder and exam file '''
 
-        # Removes content and folder
-        for fn in [f for f in os.listdir(folderPath)]:
-            os.rmdir(folderPath + '/' + fn)
-        os.rmdir(folderPath)
+    keepDirTreeUp()
 
-        # Clears Screen
-        sys_clear()
-
-    @ staticmethod
-    def createExam():
-        ''' Create main folder AND CHILD folder '''
-        # Change to parent folder
-        os.chdir(f'{directoryPath}')
-
-        isTrue = True
-
-        while isTrue:
-            main_Folder_Name = ''
-            exam_Folder_Name = ''
-
-            keepDirTreeUp(1, main_Folder_Name, exam_Folder_Name)
-
-            main_Folder_Name = input(
-                '\nChoose a folder name...\n(Ex: \'My_Exams\' or \'Main\'):> ')
-
-            keepDirTreeUp(1, main_Folder_Name, exam_Folder_Name)
-
-            # Checks if foldername exists else skips this print statement.
-            if not main_Folder_Name in [f for f in os.listdir(directoryPath) if not '.py' in f]:
-                answerCheck = input(
-                    f'\nIs \'{main_Folder_Name}\' correct? (Y/N) :> ')
-            else:
-                answerCheck = answerYes
-
-            if answerCheck in answerNo:
+    try:
+        while True:
+            exam_Folder_Name = input('\nExam Folder Name? :> ')
+            keepDirTreeUp()
+            answer = input(f'\nIs \'{exam_Folder_Name}\' correct? (Y/N) :> ')
+            if answer in answerNo:
+                keepDirTreeUp()
                 continue
+            elif answer in answerYes:
+                os.mkdir(f'{exam_Folder_Name}')
+                print(f'\n\'{exam_Folder_Name}\' has been made.')
+                keepDirTreeUp()
+                time.sleep(3)
+                break
             else:
-                try:
-                    os.mkdir(f'{main_Folder_Name}')
-                    sys_clear()
-                    break
-                except FileExistsError:
+                print('\nThat\'s not a correct answer!')
+                keepDirTreeUp()
+                time.sleep(2)
+                continue
 
-                    keepDirTreeUp(1, main_Folder_Name, exam_Folder_Name)
+        exam_Folder_Path = f'{parentPath}/{exam_Folder_Name}'
 
-                    print(
-                        f"\nThere's already a folder with the name '{main_Folder_Name}'.")
+        return exam_Folder_Name, exam_Folder_Path
 
-                    while isTrue:
-                        answerCheck = input(
-                            f'Do you want to keep \'{main_Folder_Name}\' and it\'s content? (Y/N) :> ')
+    except FileExistsError:
+        randomnr = str(random.randint(2, 100))
 
-                        keepDirTreeUp(1, main_Folder_Name, exam_Folder_Name)
+        if f'{exam_Folder_Name}_{randomnr}' == os.path.isdir(f'{parentPath}/{exam_Folder_Name}' + '/' + f'{exam_Folder_Name}_{randomnr}'):
+            randomnr += randomnr
 
-                        if answerCheck in answerNo:
-                            answer = input(
-                                f'\nARE YOU SURE YOU WANT TO DELETE \'{main_Folder_Name}\'? (Y/N) :> ').upper()
-                            if answer in answerNo:
-                                sys_clear()
-                                continue
-                            else:
-                                keepDirTreeUp(1, main_Folder_Name,
-                                              exam_Folder_Name)
+        os.mkdir(f'{exam_Folder_Name}_{randomnr}')
 
-                                # Delete directory and it's content.
-                                FileHandling.deleteFolder(
-                                    f'{directoryPath}/{main_Folder_Name}')
-                                break
-                        else:
-                            sys_clear()
-                            isTrue = False
+        exam_Folder_Path = f'{parentPath}/{exam_Folder_Name}'
+        return exam_Folder_Name, exam_Folder_Path
 
-        main_Folder_Path = f'{directoryPath}/{main_Folder_Name}'
 
-        # Change directory to this path
-        os.chdir(main_Folder_Path)
+def keepDirTreeUp(dirPath=None, printStatement=None):
+    ''' Shows Directory Tree to User '''
 
-        if not os.listdir(main_Folder_Path):
-            while True:
+    sys_clear()
 
-                keepDirTreeUp(2, main_Folder_Name, exam_Folder_Name)
+    if dirPath is None:
+        dirPath = os.getcwd()
 
-                exam_Folder_Name = input(
-                    '\nChoose a folder name: \n(Ex: \'Python\' / \'Ruby\' or \'Flashcards\') :> ')
+    if printStatement is None:
+        print('\nYour Directory Tree\n')
+    else:
+        print(f'\n{printStatement}\n')
 
-                keepDirTreeUp(2, main_Folder_Name, exam_Folder_Name)
-
-                answerCheck = input(
-                    f'\nIs \'{exam_Folder_Name}\' correct? (Y/N) :> ')
-                if answerCheck in answerNo:
-                    sys_clear()
-                    continue
-                else:
-                    sys_clear()
-                    os.mkdir(f'{main_Folder_Path}/{exam_Folder_Name}')
-
-                    keepDirTreeUp(3, main_Folder_Name, exam_Folder_Name)
-
-                    print('\nNow let\'s create a Q & A file.')
-                    input('\n\nENTER to continue... ')
-                    sys_clear()
-                    break
-        else:
-            print('\nFound the following folder(s)')
-
-            ###########################################################
-            ### Credits to User Adam on StackOverFlow. !Link Below! ###
-            ###########################################################
-            print('-' * 30)                                           #
-            paths = DisplayablePath.make_tree(Path(main_Folder_Path))
-            for path in paths:                                        #
-                print(path.displayable())                             #
-            print('-' * 30)                                           #
-            ###########################################################
-
-            while True:
-
-                if fileExtention in str([f for f in os.listdir(main_Folder_Path)]):
-                    answer = int(input(f'''\nDo you want to:
-
-1. Create a new Q and A file ? (second option = which folder inside '{main_Folder_Name}'.)
-2. Create a new exam folder inside '{main_Folder_Name}'?
-3. Delete an exam file?
-4. Delete an exam folder?
-
-5. Continue with an exiting exam file? (Shows only if there is a file with f'{fileExtention}')
-
-:> '''))            break
-                else:
-                    print(f'\n>> No exam{fileExtention} found! <<')
-                    answer = int(input(f'''\nDo you want to:
-                    
-1. Create a new exam file? (second option = which folder inside '{main_Folder_Name}'.)
-2. Create a new exam folder inside '{main_Folder_Name}'?
-3. Delete an exam file?
-4. Delete an exam folder?
-
-:> '''))
-
-                    break
-            
-            if answer == 1:
-                pass
-            if answer == 2:
-                pass
-            if answer == 3:
-                pass
-            if answer == 4:
-                pass
-            if answer == 5:
-                pass
-        return main_Folder_Path, main_Folder_Name
+    print('-' * (len(max([f for f in os.listdir(dirPath)])) + 6))
+    ##########################################################
+    #  Credits to User Adam on StackOverFlow. !Link Below!   #
+    ##########################################################
+    paths = DisplayablePath.make_tree(Path(dirPath))         #
+    for path in paths:                                       #
+        print(path.displayable())                            #
+    ##########################################################
+    print('-' * (len(max([f for f in os.listdir(dirPath)])) + 6) + '\n')
 
 
 def sys_clear():
@@ -257,138 +143,91 @@ def sys_clear():
         print("Sorry, Your OS is not known to me yet.")
 
 
-def keepDirTreeUp(whichPrintStatement, main_Folder_Name=None, exam_Folder_Name=None):
-    ''' Keeps the DirTree up inside terminal '''
+class DisplayablePath(object):
 
-    if exam_Folder_Name is None:
-        exam_Folder_Name = ''
+    #######################################################################################
+    # https://stackoverflow.com/questions/9727673/list-directory-tree-structure-in-python #
+    #######################################################################################
 
-    if main_Folder_Name is None:
-        main_Folder_Name = ''
+    display_filename_prefix_middle = '├──'
+    display_filename_prefix_last = '└──'
+    display_parent_prefix_middle = '    '
+    display_parent_prefix_last = '│   '
 
-    sys_clear()
+    def __init__(self, path, parent_path, is_last):
 
-    if whichPrintStatement == 1:
-        print('\nLet\'s make a new \'main\' folder for your exam\'s!\n')
-    elif whichPrintStatement == 2:
-        print(
-            f'\nLet\'s create another folder inside \'{main_Folder_Name}\'. \n')
-    elif whichPrintStatement == 3:
-        print(f'\nYour \'{exam_Folder_Name}\' folder has been made!\n')
-    else:
-        print('\n\n')
-        pass
-
-    ##########################################################
-    ## Credits to User Adam on StackOverFlow. !Link Below! ###
-    ##########################################################
-    print('-' * 30)                                          #
-    paths = DisplayablePath.make_tree(Path(directoryPath))   #
-    for path in paths:                                       #
-        print(path.displayable())                            #
-    print('-' * 30)                                          #
-    ##########################################################
-
-#######################################################################################
-#######################################################################################
-# https://stackoverflow.com/questions/9727673/list-directory-tree-structure-in-python #
-#######################################################################################
-#######################################################################################
-    #
-
-
-class DisplayablePath(object):                                                        #
-    display_filename_prefix_middle = '├──'                                            #
-    display_filename_prefix_last = '└──'                                              #
-    display_parent_prefix_middle = '    '                                             #
-    display_parent_prefix_last = '│   '                                               #
-    #
-
-    def __init__(self, path, parent_path, is_last):                                   #
-                                                                                      #
-        #
         self.path = Path(str(path))
-        self.parent = parent_path                                                     #
-        self.is_last = is_last                                                        #
-        if self.parent:                                                               #
-            self.depth = self.parent.depth + 1                                        #
-        else:                                                                         #
-            self.depth = 0                                                            #
-            #
+        self.parent = parent_path
+        self.is_last = is_last
+        if self.parent:
+            self.depth = self.parent.depth + 1
+        else:
+            self.depth = 0
 
-    #
     @property
-    def displayname(self):                                                            #
-        if self.path.is_dir():                                                        #
-            return self.path.name + '/'                                               #
-        return self.path.name                                                         #
-        #
+    def displayname(self):
+        if self.path.is_dir():
+            return self.path.name + '/'
+        return self.path.name
 
-    #
     @classmethod
-    def make_tree(cls, root, parent=None, is_last=False, criteria=None):              #
-        #
+    def make_tree(cls, root, parent=None, is_last=False, criteria=None):
+
         root = Path(str(root))
-        criteria = criteria or cls._default_criteria                                  #
-        #
+        criteria = criteria or cls._default_criteria
+
         displayable_root = cls(
-            root, parent, is_last)                                 #
-        yield displayable_root                                                        #
-        #
-        children = sorted(list(path                                                   #
-                               #
+            root, parent, is_last)
+        yield displayable_root
+
+        children = sorted(list(path
+
                                for path in root.iterdir()
-                               if criteria(path)),                                    #
-                          key=lambda s: str(s).lower())                               #
-        count = 1                                                                     #
-        for path in children:                                                         #
-            #
+                               if criteria(path)),
+                          key=lambda s: str(s).lower())
+        count = 1
+        for path in children:
+
             is_last = count == len(children)
-            if path.is_dir():                                                         #
-                yield from cls.make_tree(path,                                        #
-                                         parent=displayable_root,                     #
-                                         is_last=is_last,                             #
-                                         criteria=criteria)                           #
-            else:                                                                     #
-                #
+            if path.is_dir():
+                yield from cls.make_tree(path,
+                                         parent=displayable_root,
+                                         is_last=is_last,
+                                         criteria=criteria)
+            else:
+
                 yield cls(path, displayable_root, is_last)
-            count += 1                                                                #
-            #
+            count += 1
 
-    #
     @classmethod
-    def _default_criteria(cls, path):                                                 #
-        return True                                                                   #
-        #
+    def _default_criteria(cls, path):
+        return True
 
-    #
     @property
-    def displayname(self):                                                            #
-        if self.path.is_dir():                                                        #
-            return self.path.name + '/'                                               #
-        return self.path.name                                                         #
-        #
+    def displayname(self):
+        if self.path.is_dir():
+            return self.path.name + '/'
+        return self.path.name
 
-    def displayable(self):                                                            #
-        if self.parent is None:                                                       #
-            return self.displayname                                                   #
-            #
-        _filename_prefix = (self.display_filename_prefix_last                         #
-                            if self.is_last                                           #
-                            else self.display_filename_prefix_middle)                 #
-        #
-        parts = ['{!s} {!s}'.format(_filename_prefix,                                 #
-                                    self.displayname)]                                #
-        #
-        parent = self.parent                                                          #
-        while parent and parent.parent is not None:                                   #
-            parts.append(self.display_parent_prefix_middle                            #
-                         if parent.is_last                                            #
-                         else self.display_parent_prefix_last)                        #
-            parent = parent.parent                                                    #
-            #
-        #
+    def displayable(self):
+        if self.parent is None:
+            return self.displayname
+
+        _filename_prefix = (self.display_filename_prefix_last
+                            if self.is_last
+                            else self.display_filename_prefix_middle)
+
+        parts = ['{!s} {!s}'.format(_filename_prefix,
+                                    self.displayname)]
+
+        parent = self.parent
+        while parent and parent.parent is not None:
+            parts.append(self.display_parent_prefix_middle
+                         if parent.is_last
+                         else self.display_parent_prefix_last)
+            parent = parent.parent
+
         return ''.join(reversed(parts))
-        #
+
 #######################################################################################
 #######################################################################################
