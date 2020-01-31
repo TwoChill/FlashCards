@@ -15,8 +15,9 @@ selectAll = ('A', 'ALL', 'EVERYTHING',
 
 
 def startMenu():
-    ''' Option menu '''
+    ''' Display Main Menu'''
 
+    # Keep Directory Tree and Clear Screen
     keepDirTreeUp()
 
     list = ['Create New Exam', 'Rename Exam', 'Delete Exam',
@@ -33,9 +34,13 @@ def startMenu():
         menuOption = int(input("\n:> "))
         fileHandeling(menuOption)
     except ValueError:
+
+        # Keep Directory Tree and Clear Screen
         keepDirTreeUp()
         print('That\'s not what I expected. Try Again')
         systime.sleep(3)
+
+        # Back to Main Menu
         startMenu()
 
     return menuOption
@@ -57,6 +62,8 @@ def fileHandeling(menuOption):
     elif menuOption == 6:
         pass
     elif menuOption == 7 or menuOption in menuOption_Quit:
+
+        # Keep Directory Tree and Clear Screen
         keepDirTreeUp()
         loadingAnimation("Quitting", None, 15, .05)
         sys_clear()
@@ -99,25 +106,34 @@ def createMain():
 def createExam(parentPath):
     ''' Create child folder and exam file '''
 
+    # Keep Directory Tree and Clear Screen
     keepDirTreeUp()
 
     try:
         while True:
             exam_Folder_Name = input('\nExam Folder Name? :> ')
+
+            # Keep Directory Tree and Clear Screen
             keepDirTreeUp()
             answer = input(
                 f'\nIs \'{exam_Folder_Name}\' correct? (Y/N) :> ').upper()
             if answer in answerNo:
+
+                # Keep Directory Tree and Clear Screen
                 keepDirTreeUp()
                 continue
             elif answer in answerYes:
                 os.mkdir(f'{exam_Folder_Name}')
                 print(f'\n\'{exam_Folder_Name}\' has been made.')
+
+                # Keep Directory Tree and Clear Screen
                 keepDirTreeUp()
-                systime.sleep(3)
+                systime.sleep(5)
                 break
             else:
                 print('\nThat\'s not a correct answer!')
+
+                # Keep Directory Tree and Clear Screen
                 keepDirTreeUp()
                 systime.sleep(2)
                 continue
@@ -141,180 +157,281 @@ def createExam(parentPath):
 def deleteExam(menuOption):
     ''' Delete Exam Folder '''
 
+    # Keep Directory Tree and Clear Screen
     keepDirTreeUp()
 
     while True:
         try:
-            print('Which folder(s) do you want to delete?\n')
+            print('Which \'Directory\' do you want to delete?\n')
 
+            # Create a dictionary and prints a list of folders inside current working directory.
             delDir = {}
+            count = 1
             for num, item in enumerate(os.listdir(os.getcwd()), 1):
                 delDir[num] = item
-                print(str(num) + '. ' + item)
+                print(str(num) + '. ' + "'" + item + "'")
+                count += 1
 
-            folderNr = int(input('\n:> '))
-            if folderNr in range(1, (len(delDir)) + 1):
-                # if not loop through files en remove them
-                # then remove folder itself
+            # Print Back option on screen.
+            print('\n' + str(count) + '. ' + 'Back')
 
-                # Change working directory to user's chosen path.
-                os.chdir(f'{os.getcwd()}/{delDir[folderNr]}')
+            while True:
+                try:
+                    folderNr = int(input('\n:> '))
 
-                # If chosen folder is NOT empty
-                folderNotEmpty = len([f for f in os.listdir(os.getcwd())])
+                    if folderNr in range(1, (len(delDir)) + 1):
+                        # if not loop through files en remove them
+                        # then remove folder itself
 
-                if folderNotEmpty > 0:
-                    print(
-                        f'\nDirectory: \'{delDir[folderNr]}\' is not empty!\n')
+                        # Change working directory to user's chosen path.
+                        os.chdir(f'{os.getcwd()}/{delDir[folderNr]}')
 
-                    keepDirTreeUp(None, f'{delDir[folderNr]}')
-                    # print(f'Files found in \'{delDir[folderNr]}\' directory')
-                    # for num, item in enumerate(os.listdir(os.getcwd() + '/' + f'{delDir[folderNr]}'), 1):
-                    #     print('\t' + str(num) + '. ' + item)
+                        # Create dictionary of files in current working directory
+                        delFile = {}
+                        for num, files in enumerate(os.listdir(os.getcwd()), 1):
+                            delFile[num] = files
 
-                    try:
-                        while True:
-                            answer = int(
-                                input(f'1. Delete Directory: \'{delDir[folderNr]}\'?\n2. Delete Files?\n\n3. Back\n\n:> '))
-                            if answer == 1:
-                                keepDirTreeUp(None, f'{delDir[folderNr]}')
+                        # If there are more the 5 file in directory, speed up animation.
+                        if len(delFile) > 5:
+                            vector = 10     # Used for nr animation dispay
+                            time = .01      # Used for systime.sleep between animations
+                        else:
+                            vector = 15     # Used for nr animation dispay
+                            time = .05      # Used for systime.sleep between animations
 
-                                # Delete's files in chosen folder.
-                                for files in os.listdir(os.getcwd()):
-                                    os.remove(f'{os.getcwd()}/{files}')
+                        # If chosen folder is NOT empty
+                        folderNotEmpty = len(
+                            [f for f in os.listdir(os.getcwd())])
 
-                                    # Change directory one lvl up to..
-                                    os.chdir(os.path.dirname(os.getcwd()))
+                        if folderNotEmpty > 0:
+                            print(
+                                f'\nDirectory: \'{delDir[folderNr]}\' is not empty!\n')
 
-                                # ..delete chosen folder itself.
-                                os.rmdir(f'{os.getcwd()}/{delDir[folderNr]}')
+                            # Keep Directory Tree and Clear Screen
+                            keepDirTreeUp(None, f'{delDir[folderNr]}')
 
-                                # Show Deleting Animation.
-                                loadingAnimation(
-                                    f'DELETING \'{delDir[folderNr]}\'.. ', None, 15, .05)
-
-                                keepDirTreeUp()
-                                startMenu()
-                                break
-                            elif answer == 2:
-                                keepDirTreeUp(
-                                    None, f'{delDir[folderNr]}')
-
-                                # Creates a dict of files inside current working directory
-                                delFile = {}
-                                for num, files in enumerate(os.listdir(os.getcwd()), 1):
-                                    delFile[num] = files
-                                    print(str(num) + '. ' + files)
-
-                                # If there are more the 5 file in directory, speed up animation.
-                                if len(delFile) > 5:
-                                    vector = 10     # Used for nr animation dispay
-                                    time = .01      # Used for systime.sleep between animations
-                                else:
-                                    vector = 15     # Used for nr animation dispay
-                                    time = .05      # Used for systime.sleep between animations
-
+                            try:
                                 while True:
-                                    try:
-                                        # If there's only 1 file in the directory
-                                        if len([f for f in os.listdir(os.getcwd())]) == 1:
-                                            fileNr = 1
-                                            answer = input(
-                                                f'DELETE \'{delFile[fileNr]}\'? (Y/N) :> ').upper()
-                                        else:
-                                            # When there are more then one file in the directory
+                                    answer = int(
+                                        input(f'1. Delete Directory: \'{delDir[folderNr]}\'?\n2. Delete Files?\n\n3. Back\n\n:> '))
+                                    if answer == 1:
+
+                                        # Keep Directory Tree and Clear Screen
+                                        keepDirTreeUp(
+                                            None, f'{delDir[folderNr]}')
+
+                                        # Delete's files in chosen folder first.
+                                        for files in os.listdir(os.getcwd()):
+                                            os.remove(f'{os.getcwd()}/{files}')
+
+                                            # Change to parent directory of current working directory and..
+                                            os.chdir(
+                                                os.path.dirname(os.getcwd()))
+
+                                        # ..delete chosen folder itself.
+                                        os.rmdir(
+                                            f'{os.getcwd()}/{delDir[folderNr]}')
+
+                                        # Show Deleting Animation.
+                                        loadingAnimation(
+                                            f'DELETING \'{delDir[folderNr]}\'.. ', None, 15, .05)
+
+                                        # Keep Directory Tree and Clear Screen
+                                        keepDirTreeUp()
+
+                                        # Back to Main Menu
+                                        startMenu()
+                                        break
+                                    elif answer == 2:
+
+                                        # Keep Directory Tree and Clear Screen
+                                        keepDirTreeUp(
+                                            None, f'{delDir[folderNr]}')
+
+                                        # Creates a dict of files inside current working directory
+                                        for num, files in delFile.items():
+                                            print(str(num) + '. ' + files)
+
+                                        while True:
                                             try:
-                                                fileNr = int(input(
-                                                    '\nDelete which file(s)?\n--Type \'0\' for All--\n\n:> '))
-                                                keepDirTreeUp(
-                                                    None, f'{delDir[folderNr]}')
-                                            except ValueError:
-                                                fileNr = 0
+                                                # If there's only 1 file in the directory
+                                                if len([f for f in os.listdir(os.getcwd())]) == 1:
+                                                    fileNr = 1
+                                                    answer = input(
+                                                        f'DELETE \'{delFile[fileNr]}\'? (Y/N) :> ').upper()
+                                                else:
+                                                    # When there are more then one file in the directory
+                                                    try:
+                                                        fileNr = int(input(
+                                                            '\nDelete which file(s)?\n--Type \'0\' for All--\n\n:> '))
 
-                                            if fileNr == 0:
-                                                for num, file in delFile.items():
+                                                        # Keep Directory Tree and Clear Screen
+                                                        keepDirTreeUp(
+                                                            None, f'{delDir[folderNr]}')
+                                                    except ValueError:
+                                                        fileNr = 0
+                                                        # IF BACK go back !!!
+                                                    if fileNr == 0:
+                                                        for num, file in delFile.items():
 
-                                                    # Animation function
-                                                    loadingAnimation(
-                                                        f'DELETING.. \'{delFile[num]}\'.. ', None, vector, time)
+                                                            # Show Deleting Animation.
+                                                            loadingAnimation(
+                                                                f'DELETING.. \'{delFile[num]}\'.. ', None, vector, time)
 
-                                                    # Removing files from the directory. Via this for loop, removes them all.
-                                                    os.remove(
-                                                        os.getcwd() + '/' + f'{file}')
-                                                    keepDirTreeUp(
-                                                        None, f'{delDir[folderNr]}')
-                                                
-                                                # Change current working directory to My_Exam folder.
-                                                os.chdir(os.path.dirname(os.getcwd()))
-                                                keepDirTreeUp()
+                                                            # Removing files from the directory. Via this for loop, removes them all.
+                                                            os.remove(
+                                                                os.getcwd() + '/' + f'{file}')
+                                                            keepDirTreeUp(
+                                                                None, f'{delDir[folderNr]}')
 
-                                                print(f'\nAll files has been deleted!')
-                                                systime.sleep(5)
+                                                        # Change current working directory to My_Exam folder.
+                                                        os.chdir(
+                                                            os.path.dirname(os.getcwd()))
 
-                                                # Back to Menu                                               
-                                                startMenu()
-                                            else:
-                                                keepDirTreeUp(
-                                                    None, f'{delDir[folderNr]}')
+                                                        # Keep Directory Tree and Clear Screen
+                                                        keepDirTreeUp()
 
-                                                answer = input(
-                                                    f'\nDELETE \'{delFile[fileNr]}\'? (Y/N) :> ').upper()
+                                                        print(
+                                                            f'\nAll files has been deleted!')
+                                                        systime.sleep(5)
 
+                                                        # Back to Main Menu
+                                                        startMenu()
+                                                    else:
+
+                                                        # Keep Directory Tree and Clear Screen
+                                                        keepDirTreeUp(
+                                                            None, f'{delDir[folderNr]}')
+
+                                                        answer = input(
+                                                            f'\nDELETE \'{delFile[fileNr]}\'? (Y/N) :> ').upper()
+
+                                                        if answer in answerNo:
+
+                                                            # Keep Directory Tree and Clear Screen
+                                                            keepDirTreeUp(
+                                                                None, f'{delDir[folderNr]}')
+                                                            continue
+                                                        else:
+
+                                                            # Keep Directory Tree and Clear Screen
+                                                            keepDirTreeUp(
+                                                                None, f'{delDir[folderNr]}')
+                                                            os.remove(
+                                                                f'{os.getcwd()}/{delFile[fileNr]}')
+
+                                                            # Show Deleting Animation.
+                                                            loadingAnimation(
+                                                                f'DELETING.. \'{delFile[num]}\'.. ', None, vector, time)
+
+                                                # Program Flow
                                                 if answer in answerNo:
+
+                                                    # Keep Directory Tree and Clear Screen
                                                     keepDirTreeUp(
                                                         None, f'{delDir[folderNr]}')
                                                     continue
-                                                else:
+                                                elif answer in answerYes:
 
+                                                    # Keep Directory Tree and Clear Screen
                                                     keepDirTreeUp(
                                                         None, f'{delDir[folderNr]}')
-                                                    os.remove(
-                                                        f'{os.getcwd()}/{delFile[fileNr]}')
-                                                    # Animation function
+
+                                                    # Show Deleting Animation.
                                                     loadingAnimation(
-                                                        f'DELETING.. \'{delFile[num]}\'.. ', None, vector, time)
+                                                        f'DELETING \'{delFile[fileNr]}\'.. ', None, 15, .05)
 
-                                        # keepDirTreeUp(
-                                        #     None, f'{delDir[folderNr]}')
+                                                    # Removing file
+                                                    try:
+                                                        os.remove(
+                                                            f'{os.getcwd()}/{delFile[fileNr]}')
+                                                    except FileNotFoundError:
 
-                                        # Program Flow
-                                        if answer in answerNo:
-                                            keepDirTreeUp(
-                                                None, f'{delDir[folderNr]}')
-                                            continue
-                                        elif answer in answerYes:
-                                            keepDirTreeUp(
-                                                None, f'{delDir[folderNr]}')
+                                                        # Keep Directory Tree and Clear Screen
+                                                        keepDirTreeUp(
+                                                            None, f'{delDir[folderNr]}')
 
-                                            # Show Deleting Animation.
-                                            loadingAnimation(
-                                                f'DELETING \'{delFile[fileNr]}\'.. ', None, 15, .05)
+                                                        print(
+                                                            f'\n\'{delFile[fileNr]}\' has been deleted!')
 
-                                            # Removing file
-                                            os.remove(
-                                                os.getcwd() + '/' + f'{delFile[fileNr]}')
-                                            keepDirTreeUp(
-                                                None, f'{delDir[folderNr]}')
-                                            
-                                            print(
-                                                f'\n\'{delFile[fileNr]}\' has been deleted!\n\nNOW WHAT?')
-                                            startMenu()
-                                            break
+                                                        systime.sleep(5)
 
-                                    except ValueError:
-                                        keepDirTreeUp()
-                                        print('This the one')
-                                        systime.sleep(10)
-                                        continue
+                                                        # Back to Main Menu
+                                                        startMenu()
 
-                    except ValueError:
+                                            except ValueError:
+                                                # Keep Directory Tree and Clear Screen
+                                                keepDirTreeUp()
+                                                print('This the one')
+                                                systime.sleep(10)
+                                                continue
+
+                            except ValueError:
+                                # Keep Directory Tree and Clear Screen
+                                keepDirTreeUp()
+                                print('This the two')
+                                systime.sleep(10)
+                                continue
+
+                        # If chosen folder IS empty
+                        else:
+                            # Keep Directory Tree and Clear Screen
+                            keepDirTreeUp(os.path.dirname(os.getcwd()))
+
+                            # Confrimation of Deletion:
+                            while True:
+                                answer = input(
+                                    f'\nDELETE \'{delDir[folderNr]}\'?\n')
+
+                                if answer in answerNo:
+
+                                    # Keep Directory Tree and Clear Screen
+                                    keepDirTreeUp(os.path.dirname(os.getcwd()))
+
+                                    break
+                                elif answer in answerYes:
+
+                                    # Show Deleting Animation.
+                                    loadingAnimation(
+                                        f'DELETING.. \'{delDir[folderNr]}\'.. ', None, vector, time)
+
+                                    # Keep Directory Tree and Clear Screen
+                                    keepDirTreeUp(os.path.dirname(os.getcwd()))
+
+                                    # Change current working directory to deleted folder's parent
+                                    os.chdir(os.path.dirname(os.getcwd()))
+
+                                    # Remove current directory
+                                    os.rmdir(
+                                        f'{os.getcwd()}/{delDir[folderNr]}')
+
+                                    print(
+                                        f'\n\'{delDir[folderNr]}\' has been deleted!')
+
+                                    systime.sleep(5)
+
+                                    # Back to Main Menu
+                                    startMenu()
+                                    break
+                    else:
+                        # Keep Directory Tree and Clear Screen
                         keepDirTreeUp()
-                        print('This the two')
-                        systime.sleep(10)
-                        continue
 
+                        # Back to Main Menu
+                        startMenu()
+
+                except ValueError:
+
+                    # Back to Main Menu
+                    startMenu()
+                    break
+
+                    keepDirTreeUp()
+                    continue
         except ValueError:
-            keepDirTreeUp()
+
+            # Keep Directory Tree and Clear Screen
+            keepDirTreeUp(os.path.dirname(os.getcwd()))
             print('This the three')
             systime.sleep(10)
             continue
@@ -335,7 +452,7 @@ def keepDirTreeUp(dirPath=None, dirName=None):
     else:
         print(f'\nDirectory Tree: \'{dirName}\'\n')
 
-    print('-' * (len([f for f in os.listdir(dirPath)]) + 6))
+    print('-' * (len(f'Directory Tree: \'{dirName}\'') + 6))
     ##########################################################
     #  Credits to User Adam on StackOverFlow. !Link Below!   #
     ##########################################################
@@ -343,7 +460,7 @@ def keepDirTreeUp(dirPath=None, dirName=None):
     for path in paths:                                       #
         print(path.displayable())                            #
     ##########################################################
-    print('-' * (len([f for f in os.listdir(dirPath)]) + 6) + '\n')
+    print('-' * (len(f'Directory Tree: \'{dirName}\'') + 6) + '\n')
 
 
 def sys_clear():
