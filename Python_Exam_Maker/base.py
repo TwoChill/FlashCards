@@ -14,7 +14,7 @@ selectAll = ('A', 'ALL', 'EVERYTHING',
              'SELECT EVERYTHING', 'SELECT ALL', 'SELECT A')
 
 
-def startMenu():
+def startMenu(parent_Folder_Path):
     ''' Display Main Menu'''
 
     # Keep Directory Tree and Clear Screen
@@ -32,7 +32,7 @@ def startMenu():
 
     try:
         menuOption = int(input("\n:> "))
-        fileHandeling(menuOption)
+        fileHandeling(menuOption, parent_Folder_Path)
     except ValueError:
 
         # Keep Directory Tree and Clear Screen
@@ -43,14 +43,14 @@ def startMenu():
         # Back to Main Menu
         startMenu()
 
-    return menuOption
+    return menuOption, parent_Folder_Path
 
 
-def fileHandeling(menuOption):
+def fileHandeling(menuOption, parent_Folder_Path):
     ''' Handels everything to do with files '''
 
     if menuOption == 1:
-        pass
+        exam_Folder_Name, exam_Folder_Path = createExam(parent_Folder_Path)
     elif menuOption == 2:
         pass
     elif menuOption == 3:
@@ -115,8 +115,10 @@ def createExam(parentPath):
 
             # Keep Directory Tree and Clear Screen
             keepDirTreeUp()
+
             answer = input(
                 f'\nIs \'{exam_Folder_Name}\' correct? (Y/N) :> ').upper()
+
             if answer in answerNo:
 
                 # Keep Directory Tree and Clear Screen
@@ -124,11 +126,12 @@ def createExam(parentPath):
                 continue
             elif answer in answerYes:
                 os.mkdir(f'{exam_Folder_Name}')
-                print(f'\n\'{exam_Folder_Name}\' has been made.')
 
                 # Keep Directory Tree and Clear Screen
                 keepDirTreeUp()
-                systime.sleep(5)
+
+                # Back to Main Menu
+                startMenu()
                 break
             else:
                 print('\nThat\'s not a correct answer!')
@@ -162,6 +165,22 @@ def deleteExam(menuOption):
 
     while True:
         try:
+            # If My_Exam folder is empty..
+            if len(os.listdir(os.getcwd())) == 0:
+
+                # Show Searching Animation.
+                loadingAnimation('Searching...', None, 15, .05)
+                systime.sleep(1)
+
+                # Keep Directory Tree and Clear Screen
+                keepDirTreeUp()
+
+                print('No Exam\'s found!')
+                systime.sleep(5)
+
+                # Back to Main Menu
+                startMenu()
+
             print('Which \'Directory\' do you want to delete?\n')
 
             # Create a dictionary and prints a list of folders inside current working directory.
