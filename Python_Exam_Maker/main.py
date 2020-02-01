@@ -5,13 +5,7 @@ parent_Folder_Path = base.createMain()
 
 # !! Currently Working On !!
 # Menu
-menuOption = base.startMenu()
-
-# # Create a Exam Folder and File
-# exam_Folder_Name, exam_Folder_Path = base.createExam(parent_Folder_Path)
-
-#
-# base.fileHandeling(menuOption)
+menuOption = base.startMenu(parent_Folder_Path)
 
 ##################################################
 ######## To create more files for testing ########
