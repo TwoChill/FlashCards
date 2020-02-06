@@ -14,14 +14,14 @@ menuOption_Quit = ('Q', 'QUIT', 'STOP')
 selectAll = ('A', 'ALL', 'EVERYTHING',
              'SELECT EVERYTHING', 'SELECT ALL', 'SELECT A')
 exam_Folder_Name = None
-subFolder = False
-bottomPrintStatement_1 = 'Which \'Directory\' do you want to delete?\n'
-bottomPrintStatement_2 = 'Create Exam Folder\n'
-bottomPrintStatement_3 = ''
-bottomPrintStatement_4 = f'Create sub-folder in \'{exam_Folder_Name}\'? (Y/N) :> '
-bottomPrintStatement_5 = 'DELETE ALL FILES AND DIRECTORIES\n'
-bottomPrintStatement_6 = 'Type \'back\' for Main Menu\n'
-bottomPrintStatement_7 = 'Select a number:\n'
+whichDirectory = 'Which \'Directory\' do you want to delete?\n'
+createExamFolder = 'Create Exam Folder\n'
+deleteAllFilesAndDirs = 'DELETE ALL FILES AND DIRECTORIES\n'
+typeBackToMainMenu = 'Type \'back\' for Main Menu\n'
+createAFolderIn = 'Create a folder in:\n'
+createAFileIn = 'Create a exam file in:\n'
+noFoldersFound = 'There are no exam folders found!\n'
+pressEnter = '\n>> '
 
 
 def startMenu(main_Folder_Path, quitOption=False):
@@ -33,8 +33,8 @@ def startMenu(main_Folder_Path, quitOption=False):
     # Keep Directory Tree and Clear Screen
     keepDirTreeUp(None, None, 'Menu\n')
 
-    menuOptions = ['Create Folders', 'Rename Rename', 'Delete Folders',
-                   'Create a New Exam File', 'Rename an Exam File', 'Delete an Exam File', 'Quit']
+    menuOptions = ['Create Folders', 'Rename Folders', 'Delete Folders',
+                   'Create Exam File', 'Rename Exam File(s)', 'Delete Exam File(s)', 'Quit']
 
     # Print a numbered list of menu options on screen.
     for num, item in enumerate(menuOptions, 1):
@@ -69,13 +69,22 @@ def fileHandeling(menuOption, main_Folder_Path):
     ''' Handels everything to do with files '''
 
     if menuOption == 1:
+
+        # If My_Exam is not empty ( != 0)
+        if len(os.listdir(os.getcwd())) != 0:
+            # Remove 'Create Sub-Folder' option
+            subFolder = True
+        else:
+            subFolder = False
+
+        #
         createFolder(os.getcwd(), subFolder)
     elif menuOption == 2:
-        pass
+        renameFolders()
     elif menuOption == 3:
         deleteExam(menuOption, main_Folder_Path)
     elif menuOption == 4:
-        pass
+        addExamQnA(os.getcwd(), True)
     elif menuOption == 5:
         pass
     elif menuOption == 6:
@@ -90,7 +99,7 @@ def fileHandeling(menuOption, main_Folder_Path):
 
         # Built-in print statement has a 'newline' built in which is used for replacing ':>' on screen.
         print('')
-        loadingAnimation("Quitting", None, 15, .05)
+        loadingAnimation("Quitting", None, 10, .01)
 
         sys_clear()
         quit()
@@ -143,12 +152,12 @@ def createFolder(getcwd, subFolder):
         while True:
             # Keep Directory Tree and Clear Screen
             keepDirTreeUp(getcwd, os.path.basename(
-                os.getcwd()), bottomPrintStatement_7)
+                os.getcwd()), 'Select a number:\n')
 
+            # Depending on value of 'subFolder'; may or may not print the second item/(option) in the for loop
             count = 1
-            if len([f for f in os.listdir(os.getcwd())]) == 0:
-                subFolder = True
-            lst = [f'Create a Folder in \'{os.path.basename(os.getcwd())}\'',
+
+            lst = [f'Create a folder in \'{os.path.basename(os.getcwd())}\'',
                    f'Create a Sub-Folder', 'Back']
 
             while True:
@@ -161,7 +170,7 @@ def createFolder(getcwd, subFolder):
                         else:
 
                             # Skips question for subfolder because that is already the point.
-                            if subFolder is True and count == 2:
+                            if subFolder is False and count == 2:
                                 count += 1
                                 continue
                             else:
@@ -180,16 +189,16 @@ def createFolder(getcwd, subFolder):
                     systime.sleep(3)
 
                     # Keep Directory Tree and Clear Screen
-                    keepDirTreeUp(getcwd, None, bottomPrintStatement_7)
+                    keepDirTreeUp(getcwd, None, createAFolderIn)
                     continue
 
             while True:
                 if answer == 1:
                     # Keep Directory Tree and Clear Screen
-                    keepDirTreeUp(getcwd, None, bottomPrintStatement_6)
+                    keepDirTreeUp(getcwd, os.path.basename(
+                        os.getcwd()), typeBackToMainMenu)
 
-                    exam_Folder_Name_2 = input('Exam Folder Name? :> ')
-                    break
+                    exam_Folder_Name_2 = input('Folder Name? :> ')
 
                     # This block let's the usr go back to the main menu
                     if exam_Folder_Name_2 in menuOption_Back or exam_Folder_Name_2.upper() in menuOption_Back:
@@ -197,52 +206,15 @@ def createFolder(getcwd, subFolder):
                         # Back to Main Menu
                         startMenu(getcwd, quitOption=False)
 
+                    break
+
                 # Change answer to 1 if subfolder already is being created
-                elif answer == 2 and subFolder is True:
+                elif answer == 2 and subFolder is False:
                     answer = 1
                     continue
-                elif answer == 2 and subFolder is False:
+                elif answer == 2 and subFolder is True:
 
-                    # Keep Directory Tree and Clear Screen
-                    keepDirTreeUp(getcwd, None, bottomPrintStatement_7)
-
-                    # Number of folders inside My_Exam
-                    dirsInTree = len(os.listdir(os.getcwd()))
-
-                    subFolderDict = {}
-                    for num, item in enumerate(os.listdir(os.getcwd()), 1):
-
-                        # Print to screen as a option menu
-                        print(f'{num}. {item}')
-
-                        # Add also to dict
-                        subFolderDict[num] = item
-
-                    # Print 'Back' on screen
-                    print(f'\n{dirsInTree + 1}. Back\n')
-
-                    subFolderNr = int(input(':> '))
-
-                    try:
-                        if subFolderNr in range(1, (len(subFolderDict) + 1)):
-                            os.chdir(
-                                f'{os.getcwd()}/{subFolderDict[subFolderNr]}')
-
-                        # Keep Directory Tree and Clear Screen
-                        keepDirTreeUp(getcwd, None, bottomPrintStatement_2)
-
-                        # Create new folder
-                        createFolder(os.getcwd(), False)
-
-                    except ValueError:
-                        if answer in menuOption_Back:
-
-                            # Back to Main Menu
-                            startMenu(os.getcwd(), quitOption=False)
-                    
-                    print('VALUEERROR RAISED!')
-                    systime.sleep(10)    
-                    continue
+                    chooseFileOrFolder(getcwd, False)
 
                 elif answer == 3:
                     startMenu(getcwd, quitOption=False)
@@ -252,7 +224,8 @@ def createFolder(getcwd, subFolder):
                 exam_Folder_Name_2 = exam_Folder_Name_2.replace(' ', '_')
 
             # Keep Directory Tree and Clear Screen
-            keepDirTreeUp(getcwd, None, bottomPrintStatement_2)
+            keepDirTreeUp(getcwd, os.path.basename(
+                os.getcwd()), typeBackToMainMenu)
 
             answer = input(
                 f'Is \'{exam_Folder_Name_2}\' correct? (Y/N) :> ').upper()
@@ -263,7 +236,7 @@ def createFolder(getcwd, subFolder):
             if answer in answerNo:
 
                 # Keep Directory Tree and Clear Screen
-                keepDirTreeUp(getcwd, exam_Folder_Name, bottomPrintStatement_2)
+                keepDirTreeUp(getcwd, exam_Folder_Name, createExamFolder)
 
                 continue
             elif answer in answerYes:
@@ -273,24 +246,23 @@ def createFolder(getcwd, subFolder):
                 os.mkdir(f'{exam_Folder_Name}')
 
                 # Keep Directory Tree and Clear Screen
-                keepDirTreeUp(getcwd, exam_Folder_Name, bottomPrintStatement_2)
+                keepDirTreeUp(getcwd, exam_Folder_Name, createExamFolder)
 
-                # Create sub-folder?
-                createSubFolder(getcwd, exam_Folder_Name,
-                                bottomPrintStatement_2, True)
+                # Go back to mabye creating a sub-folder
+                createFolder(getcwd, True)
 
-                # Back to Main Menu
-                startMenu(os.getcwd())
                 break
+            elif answer.upper() in menuOption_Back:
+                startMenu('', quitOption=False)
             else:
                 # Keep Directory Tree and Clear Screen
-                keepDirTreeUp(None, None, bottomPrintStatement_2)
+                keepDirTreeUp(None, None, createExamFolder)
 
                 print('That\'s not a correct answer!')
                 systime.sleep(3)
 
                 # Keep Directory Tree and Clear Screen
-                keepDirTreeUp(None, None, bottomPrintStatement_2)
+                keepDirTreeUp(None, None, createExamFolder)
 
                 continue
 
@@ -314,9 +286,6 @@ def createFolder(getcwd, subFolder):
         exam_Folder_Name = f'{exam_Folder_Name}'
         exam_Folder_Path = f'{os.getcwd}/{exam_Folder_Name}'
 
-        # Ask usr to create a sub-folder
-        createSubFolder(os.getcwd(), exam_Folder_Name, bottomPrintStatement_2)
-
         return exam_Folder_Name, exam_Folder_Path
 
 # menuOption will be used when splitting up DeleteFolder and Files
@@ -326,7 +295,7 @@ def deleteExam(menuOption, main_Folder_Path):
     ''' Delete Exam Folder '''
 
     # Keep Directory Tree and Clear Screen
-    keepDirTreeUp(None, None, bottomPrintStatement_1)
+    keepDirTreeUp(None, None, whichDirectory)
 
     while True:
         try:
@@ -334,10 +303,10 @@ def deleteExam(menuOption, main_Folder_Path):
             if len(os.listdir(os.getcwd())) == 0:
 
                 # Show Searching Animation.
-                loadingAnimation('Searching...', None, 15, .05)
+                loadingAnimation('Searching...', None, 10, .05)
 
                 # Keep Directory Tree and Clear Screen
-                keepDirTreeUp(None, None, bottomPrintStatement_1)
+                keepDirTreeUp(None, None, whichDirectory)
 
                 print('No Exam(\'s) found!')
                 systime.sleep(5)
@@ -351,6 +320,10 @@ def deleteExam(menuOption, main_Folder_Path):
                 folderName = [f for f in os.listdir(os.getcwd())]
 
                 while True:
+
+                    keepDirTreeUp(
+                        os.getcwd(), os.path.basename(os.getcwd()), None)
+
                     answer = input(
                         f'DELETE DIRECTORY: \'{folderName[0]}\'? (Y/N) :> ').upper()
 
@@ -359,28 +332,35 @@ def deleteExam(menuOption, main_Folder_Path):
                         # Back to Main Menu
                         startMenu(os.getcwd(), quitOption=False)
                     elif answer in answerYes:
-                        keepDirTreeUp()
+                        keepDirTreeUp(
+                            os.getcwd(), os.path.basename(os.getcwd()), None)
 
                         answer = input(
-                            f'ARE YOU SURE ABOUT DELETING: \'{os.listdir(os.getcwd())[0]}\'? (Y/N) :> ').upper()
+                            f'ARE YOU SURE ABOUT DELETING: \'{os.listdir(os.getcwd())[0]}\'?\n\nDirectory to be deleted: \'{os.path.basename(os.getcwd())}\'\n\n(Y/N) :> ').upper()
+
                         if answer in answerNo:
 
                             # Keep Directory Tree and Clear Screen
-                            keepDirTreeUp()
+                            keepDirTreeUp(
+                                os.getcwd(), os.path.basename(os.getcwd()), None)
 
                             # Back to Main Menu
                             startMenu(os.getcwd())
                         elif answer in answerYes:
 
                             # Keep Directory Tree and Clear Screen
-                            keepDirTreeUp()
+                            keepDirTreeUp(
+                                os.getcwd(), os.path.basename(os.getcwd()), None)
 
                             # Removes directory and all files in them.
                             shutil.rmtree(os.getcwd())
-                            break
+                        break
+
                     else:
                         # Keep Directory Tree and Clear Screen
-                        keepDirTreeUp()
+                        keepDirTreeUp(
+                            os.getcwd(), os.path.basename(os.getcwd()), None)
+
                         continue
 
             else:
@@ -427,7 +407,7 @@ def deleteExam(menuOption, main_Folder_Path):
                                 vector = 5     # Used for nr animation dispay
                                 time = .01      # Used for systime.sleep between animations
                             else:
-                                vector = 15     # Used for nr animation dispay
+                                vector = 10     # Used for nr animation dispay
                                 time = .05      # Used for systime.sleep between animations
 
                             # When ALL option is chosen
@@ -435,7 +415,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                 # Keep Directory Tree and Clear Screen
                                 keepDirTreeUp(
-                                    None, None, bottomPrintStatement_5)
+                                    None, None, deleteAllFilesAndDirs)
 
                                 # Creates a dict of files inside current working directory
                                 for num, files in delFile.items():
@@ -446,6 +426,7 @@ def deleteExam(menuOption, main_Folder_Path):
                                     # When there are more then one file in the directory
                                     fileNr = input(
                                         '\nDELETE ALL FILES AND DIRECTORIES? (Y/N) :> ').upper()
+
                                     if fileNr in answerNo:
 
                                         # Back to Main Menu
@@ -456,7 +437,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                         # Keep Directory Tree and Clear Screen
                                         keepDirTreeUp(
-                                            None, None, bottomPrintStatement_5)
+                                            None, None, deleteAllFilesAndDirs)
 
                                         for num, file in delFile.items():
 
@@ -470,14 +451,14 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                             # Keep Directory Tree and Clear Screen
                                             keepDirTreeUp(
-                                                None, None, bottomPrintStatement_5)
+                                                None, None, deleteAllFilesAndDirs)
 
                                         # Keep Directory Tree and Clear Screen
                                         keepDirTreeUp(
-                                            None, None, bottomPrintStatement_5)
+                                            None, None, deleteAllFilesAndDirs)
 
-                                        print(f'All files has been deleted!')
-                                        systime.sleep(6)
+                                        print(f'Done!')
+                                        input(pressEnter)
 
                                         # Back to Main Menu
                                         startMenu(main_Folder_Path)
@@ -525,7 +506,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                     # Show Deleting Animation.
                                     loadingAnimation(
-                                        f'DELETING \'{delFile[fileNr]}\'.. ', None, 15, .05)
+                                        f'DELETING \'{delFile[fileNr]}\'.. ', None, 10, .01)
 
                                     # Removing file
                                     try:
@@ -543,8 +524,8 @@ def deleteExam(menuOption, main_Folder_Path):
                                         systime.sleep(5)
 
                                         # Back to Main Menu
-                                        startMenu(
-                                            main_Folder_Path)
+                                        startMenu(os.getcwd(),
+                                                  quitOption=False)
 
                             # If chosen folder is NOT empty
                             folderNotEmpty = len(
@@ -558,14 +539,10 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                 # Keep Directory Tree and Clear Screen
                                 keepDirTreeUp(
-                                    None, f'{delDir[folderNr]}', bottomPrintStatement_1)
+                                    None, f'{delDir[folderNr]}', whichDirectory)
 
-                                # !!! Next answer should be a list created by a for loop wich also inclueds subfolders in list.
                                 try:
                                     while True:
-                                        # !!! put error tracebakc in except two,
-                                        # !!! make a for loop to print and append string to  lst based on folders in map
-                                        # !!! maby make a function that will check if theres more dirs and will create and append more lists..
                                         # Keep the last item in the list 'Back'
                                         lst = [
                                             f'Delete Directory: \'{delDir[folderNr]}\'?', 'Delete Files?', 'Back']
@@ -600,7 +577,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                             # Show Deleting Animation.
                                             loadingAnimation(
-                                                f'DELETING \'{delDir[folderNr]}\'.. ', None, 15, .05)
+                                                f'DELETING \'{delDir[folderNr]}\'.. ', None, 10, .01)
 
                                             # Keep Directory Tree and Clear Screen
                                             keepDirTreeUp()
@@ -631,7 +608,7 @@ def deleteExam(menuOption, main_Folder_Path):
                             else:
                                 # Keep Directory Tree and Clear Screen
                                 keepDirTreeUp(os.path.dirname(
-                                    os.getcwd()), None, bottomPrintStatement_1)
+                                    os.getcwd()), None, whichDirectory)
 
                                 # Confrimation of Deletion:
                                 while True:
@@ -642,7 +619,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                         # Keep Directory Tree and Clear Screen
                                         keepDirTreeUp(os.path.dirname(
-                                            os.getcwd()), None, bottomPrintStatement_1)
+                                            os.getcwd()), None, whichDirectory)
 
                                         # Back to Main Menu
                                         startMenu(
@@ -651,7 +628,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                         # Keep Directory Tree and Clear Screen
                                         keepDirTreeUp(os.path.dirname(
-                                            os.getcwd()), None, bottomPrintStatement_1)
+                                            os.getcwd()), None, whichDirectory)
 
                                         # Show Deleting Animation.
                                         loadingAnimation(
@@ -659,7 +636,7 @@ def deleteExam(menuOption, main_Folder_Path):
 
                                         # Keep Directory Tree and Clear Screen
                                         keepDirTreeUp(os.path.dirname(
-                                            os.getcwd()), None, bottomPrintStatement_1)
+                                            os.getcwd()), None, whichDirectory)
 
                                         # Change current working directory to deleted folder's parent
                                         os.chdir(os.path.dirname(os.getcwd()))
@@ -690,50 +667,104 @@ def deleteExam(menuOption, main_Folder_Path):
                         # Back to Main Menu
                         startMenu(main_Folder_Path, quitOption=False)
                         break
-
-                        keepDirTreeUp()
-                        continue
-        except ValueError:
-
-            # Keep Directory Tree and Clear Screen
-            keepDirTreeUp(os.path.dirname(os.getcwd()))
-            print('This the three')
-            systime.sleep(10)
-            continue
+            break
+        except FileNotFoundError:
+            break
 
     return answer
 
 
-def createSubFolder(getcwd, examFolderName, bottomPrintStatement_NR, subFolder):
-    ''' Creates a new directory in current working directory '''
+def chooseFileOrFolder(getcwd, createFile):
+    ''' Create a folder or file '''
 
-    while True:
-        # Keep Directory Tree and Clear Screen
-        keepDirTreeUp(getcwd, None, bottomPrintStatement_NR)
+    # Keep Directory Tree and Clear Screen
+    if createFile is True:
+        doublePrintStatement = createAFileIn
+    else:
+        doublePrintStatement = createAFolderIn
 
-        answer = input(
-            f'Create another folder inside \'{examFolderName}\'? (Y/N) :> ').upper()
+    keepDirTreeUp(getcwd, os.path.basename(getcwd), doublePrintStatement)
 
-        if answer in answerNo:
-            break
-        elif answer in answerYes:
-            # Call function: createFolder with only a change in current working directory
-            # CHECK IF CORRECT examFOLDERNAME. With randomnr.
-            getcwd = f'{os.getcwd()}/{examFolderName}'
+    # Number of folders inside My_Exam
+    dirsInTree = len(os.listdir(getcwd))
 
-            # Create a new sub-folder
-            createFolder(getcwd, subFolder)
+    subFolderDict = {}
+    for num, item in enumerate(os.listdir(getcwd), 1):
 
-            # Ask again
-            continue
-        else:
-            # Keep Directory Tree and Clear Screen
-            keepDirTreeUp(getcwd, examFolderName, bottomPrintStatement_NR)
+        # Print to screen as a option menu
+        print(f'{num}. {item}')
 
-            print('That\'s not a valid answer!')
-            systime.sleep(3)
+        # Add also to dict
+        subFolderDict[num] = item
 
-            continue
+    # Print 'Back' on screen
+    print(f'\n{dirsInTree + 1}. Back\n')
+
+    subFolderNr = int(input(':> '))
+
+    if subFolderNr in range(1, (len(subFolderDict) + 1)):
+        os.chdir(
+            f'{getcwd}/{subFolderDict[subFolderNr]}')
+
+        # Restet variable to correct current working directory
+        getcwd = os.getcwd()
+
+    # Keep Directory Tree and Clear Screen
+    keepDirTreeUp(getcwd, None, createExamFolder)
+
+    # Create new folder
+    createFolder(getcwd, False)
+
+    return f'{getcwd}'
+
+
+def renameFolders():
+    pass
+
+
+def addExamQnA(getcwd, createFile):
+    ''' Add Questions and Answer in a txt file '''
+
+    # Keep Directory Tree and Clear Screen
+    keepDirTreeUp(None, os.path.basename(getcwd), noFoldersFound)
+
+    # Check if My_Exam is NOT empty, if so create a folder first
+    if len(os.listdir(getcwd)) == 0:
+        print('Please create a new exam folder first...')
+        input(pressEnter)
+
+        createFolder(getcwd, False)
+
+    # Select folder and list all folders inside or create there
+    chosenFolderPath = chooseFileOrFolder(getcwd, createFile)
+    print('This is choseoFolderp', chosenFolderPath)
+    systime.sleep(5)
+
+    # create file of continue if .txt exist
+
+
+def keepExamScore():
+    # Ask usr if correct guessed?
+    # Takes correct answer/input form usr
+    # keeps track of which question nr is incorrect
+    # calles function and ask usr if want only to rehash incorrect
+    pass
+
+
+def recallExamQandA():
+    # Shows Q in file
+    # Ask for an answer
+    # Show correct answer
+
+    # Pass incorrect Q and A to keepExamScore
+    pass
+
+
+def giveExamQandA():
+    # Option of random
+    # Takes chosen QandA.txt file
+    # Return Q and A as a tuple
+    pass
 
 
 def keepDirTreeUp(dirPath=None, dirName=None, bottomStatement=None):
@@ -747,7 +778,7 @@ def keepDirTreeUp(dirPath=None, dirName=None, bottomStatement=None):
     if dirName is None:
         print('\nYour Directory Tree\n')
     else:
-        print(f'\nDirectory Tree: \'{dirName}\'\n')
+        print(f'\nDirectory Tree: \'{os.path.basename(dirName)}\'\n')
 
     if bottomStatement is None:
         bottomStatement = []
